@@ -29,10 +29,15 @@ namespace FaceSign.data
         public static string AppName = "";
         public static string ChannelType = Channel_JL;
         public static string IRType = IR_G120;
+        //是否支持人脸识别
         public static bool IsSupportAI = false;
+        //是否支持金属检测（北京地坛医院专用）
         public static bool IsSupportMetalDetection = false;
+        //是否支持门禁
         public static bool IsSupportAccessControl = false;
+        //是否支持人脸识别黑名单
         public static bool IsSupportBlacklist = false;
+        //是否支持人流量统计
         public static bool IsSupportTrafficStatistics = false;
 
 
