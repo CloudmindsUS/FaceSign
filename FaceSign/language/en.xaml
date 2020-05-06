@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:FaceSign.language"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="login">Login</sys:String>
+    <sys:String x:Key="main_window_title">Cloudminds face recognition temperature measurement system</sys:String>
+    <sys:String x:Key="update_face_lib">Update face library</sys:String>
+    <sys:String x:Key="pause_face_recognition">pause face recognition</sys:String>
+    <sys:String x:Key="dialog_tip">Tips</sys:String>
+    <sys:String x:Key="terminal_id_can_not_null">Terminal id can not be empty</sys:String>
+    <sys:String x:Key="login_fail">Login fail</sys:String>
+    <sys:String x:Key="serial_port_setting">Serial port options</sys:String>
+    <sys:String x:Key="txt_serial_port_name">Serial port name</sys:String>
+    <sys:String x:Key="txt_query_interval">Query frequency (unit: millisecond)</sys:String>
+    <sys:String x:Key="txt_alarm_threshold">Treble threshold</sys:String>
+    <sys:String x:Key="txt_quiet_threshold">Mute threshold</sys:String>
+    <sys:String x:Key="txt_continue_count">Number of triggered alarms</sys:String>
+    <sys:String x:Key="txt_save_config">Save the configuration</sys:String>
+    <sys:String x:Key="txt_alarm_temperature">Alarm temperature</sys:String>
+    <sys:String x:Key="txt_close_door_delay">Delayed door closing time(unit:millisecond)</sys:String>
+    <sys:String x:Key="txt_open_door_delay">Delayed door opening time(unit:millisecond)</sys:String>
+    <sys:String x:Key="txt_query_interval_error">Query frequency error</sys:String>
+    <sys:String x:Key="txt_alarm_threshold_error">Treble threshold error</sys:String>
+    <sys:String x:Key="txt_quiet_threshold_error">Mute threshold error</sys:String>
+    <sys:String x:Key="txt_continue_count_error">Number of triggered alarms error</sys:String>
+    <sys:String x:Key="txt_alarm_temperature_error">Alarm temperature error</sys:String>
+    <sys:String x:Key="txt_close_door_delay_error">Delayed door closing time error</sys:String>
+    <sys:String x:Key="txt_open_door_delay_error">Delayed door opening time error</sys:String>
+    <sys:String x:Key="txt_pass_person_count">Passing people：</sys:String>
+
+
+</ResourceDictionary>

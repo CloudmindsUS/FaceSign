@@ -1,0 +1,34 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:FaceSign.language"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="login">登录</sys:String>
+
+    <sys:String x:Key="main_window_title">达闼科技人脸识别测温系统</sys:String>
+    <sys:String x:Key="update_face_lib">更新人脸库中</sys:String>
+    <sys:String x:Key="pause_face_recognition">暂停人脸识别</sys:String>
+    <sys:String x:Key="dialog_tip">提示</sys:String>
+    <sys:String x:Key="terminal_id_can_not_null">终端ID不能为空</sys:String>
+    <sys:String x:Key="login_fail">登录失败</sys:String>
+    <sys:String x:Key="serial_port_setting">串口设置</sys:String>
+    <sys:String x:Key="txt_serial_port_name">串口地址</sys:String>
+    <sys:String x:Key="txt_query_interval">查询频率(单位:毫秒)</sys:String>
+    <sys:String x:Key="txt_alarm_threshold">高音阈值</sys:String>
+    <sys:String x:Key="txt_quiet_threshold">静音阈值</sys:String>
+    <sys:String x:Key="txt_continue_count">触发报警持续次数</sys:String>
+    <sys:String x:Key="txt_save_config">保存配置</sys:String>
+    <sys:String x:Key="txt_alarm_temperature">高温报警温度</sys:String>
+    <sys:String x:Key="txt_close_door_delay">延时关门时间(单位:毫秒)</sys:String>
+    <sys:String x:Key="txt_open_door_delay">延时开门时间(unit:millisecond)</sys:String>
+
+    <sys:String x:Key="txt_query_interval_error">查询频率输入错误</sys:String>
+    <sys:String x:Key="txt_alarm_threshold_error">高音阈值输入错误</sys:String>
+    <sys:String x:Key="txt_quiet_threshold_error">静音阈值输入错误</sys:String>
+    <sys:String x:Key="txt_continue_count_error">触发报警持续次数输入错误</sys:String>
+    <sys:String x:Key="txt_alarm_temperature_error">高温报警温度输入错误</sys:String>
+    <sys:String x:Key="txt_close_door_delay_error">延时关门时间输入错误</sys:String>
+    <sys:String x:Key="txt_pass_person_count">通过人数：</sys:String>
+
+
+
+</ResourceDictionary>

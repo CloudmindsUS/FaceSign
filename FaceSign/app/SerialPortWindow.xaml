@@ -1,0 +1,49 @@
+﻿<Window x:Class="FaceSign.app.SerialPortWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FaceSign.app"
+        mc:Ignorable="d"
+        Title="SerialPortWindow" Height="450" Width="800">
+    <Grid>
+        <ScrollViewer>
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <Label FontSize="22" Content="{DynamicResource ResourceKey=txt_serial_port_name}"></Label>
+                    <ComboBox FontSize="22" Name="ComName"></ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Label FontSize="22" Content="{DynamicResource ResourceKey=txt_query_interval}"></Label>
+                    <TextBox FontSize="22" Name="QueryInterval" Width="100"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Label FontSize="22" Content="{DynamicResource ResourceKey=txt_alarm_threshold}"></Label>
+                    <TextBox FontSize="22" Name="AlarmThreshold" Width="100"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Label FontSize="22" Content="{DynamicResource ResourceKey=txt_quiet_threshold}"></Label>
+                    <TextBox FontSize="22" Name="QuietThreshold" Width="100"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Label FontSize="22" Content="{DynamicResource ResourceKey=txt_continue_count}"></Label>
+                    <TextBox FontSize="22" Name="ContinueCount" Width="100"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Label FontSize="22" Content="{DynamicResource ResourceKey=txt_alarm_temperature}"></Label>
+                    <TextBox FontSize="22" Name="AlarmTemperature" Width="100"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Label FontSize="22" Content="{DynamicResource ResourceKey=txt_close_door_delay}"></Label>
+                    <TextBox FontSize="22" Name="CloseDoorDelay" Width="100"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Label FontSize="22" Content="{DynamicResource ResourceKey=txt_open_door_delay}"></Label>
+                    <TextBox FontSize="22" Name="OpenDoorDelay" Width="100"></TextBox>
+                </StackPanel>
+                <Button Margin="10" x:Name="SaveButton" FontSize="22" Content="{DynamicResource ResourceKey=txt_save_config}"></Button>
+                <Button Visibility="Hidden" Margin="10" x:Name="OpenDoorButton" FontSize="22" Content="开门" Click="OpenDoorButton_Click"></Button>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

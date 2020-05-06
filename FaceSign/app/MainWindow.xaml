@@ -1,0 +1,17 @@
+﻿<Window x:Class="FaceSign.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FaceSign"
+        mc:Ignorable="d"
+        Title="{DynamicResource ResourceKey=main_window_title}" Height="450" Width="800">
+    <Grid >
+        <Grid.Background>
+            <ImageBrush ImageSource="/FaceSign;component/Resources/bg.jpg" />
+        </Grid.Background>
+        <TextBox Name="TerminalId" Width="200" Height="30" Foreground="Black" FontSize="25"/>
+        <Button Content="{DynamicResource ResourceKey=login}" HorizontalAlignment="Left" Margin="296,264,0,0" VerticalAlignment="Top" Width="200" Height="30" FontSize="22" Click="Button_Click"/>
+        <Button x:Name="SerialPortSetting" Content="{DynamicResource ResourceKey=serial_port_setting}" HorizontalAlignment="Left" Margin="296,304,0,0" VerticalAlignment="Top" Width="200" Height="30" FontSize="22" RenderTransformOrigin="-0.17,0.2" Click="SerialPortSetting_Click"/>
+    </Grid>
+</Window>
