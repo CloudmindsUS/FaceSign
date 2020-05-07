@@ -15,6 +15,7 @@ namespace FaceSign.db
         public static DBManager Instance = new DBManager();
 
         public SqlSugarClient DB;
+        public SimpleClient<PersonModel> PersonDB;
 
         private string DBName = "FaceSign.db";
         private DBManager() {
@@ -31,6 +32,7 @@ namespace FaceSign.db
                 Console.WriteLine();
             };
             DB.CodeFirst.InitTables(typeof(PersonModel));
+            PersonDB = new SimpleClient<PersonModel>(DB);
         }
     }
 }

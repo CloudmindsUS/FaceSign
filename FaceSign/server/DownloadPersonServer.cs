@@ -44,7 +44,14 @@ namespace FaceSign.server
             this.terminalId = terminalId;
             token = new CancellationToken();
             Task.Factory.StartNew(()=> {
-                PersonList = DBManager.Instance.DB.Queryable<PersonModel>().ToList();
+                if (!BuildConfig.IsSupportBlacklist)
+                {
+                    PersonList = DBManager.Instance.DB.Queryable<PersonModel>().ToList();
+                }
+                else
+                {
+                    PersonList = DBManager.Instance.PersonDB.GetList(it => it.type == "8");
+                }
                 while (!token.IsCancellationRequested)
                 {
                     CheckPersonUpdate();
@@ -89,7 +96,15 @@ namespace FaceSign.server
             onUpdatePerson?.Invoke(false);
             var end = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             Log.I("update start time:"+start+",end time:"+end);
-            PersonList = DBManager.Instance.DB.Queryable<PersonModel>().ToList();
+            if (!BuildConfig.IsSupportBlacklist)
+            {
+                PersonList = DBManager.Instance.DB.Queryable<PersonModel>().ToList();
+            }
+            else
+            {
+                PersonList = DBManager.Instance.PersonDB.GetList(it=>it.type=="8");
+            }
+            Log.I("person list:"+(PersonList == null));
         }
 
         private void UpdatePerson(PersonModel model,int index)

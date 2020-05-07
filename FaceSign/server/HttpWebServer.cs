@@ -159,6 +159,7 @@ namespace FaceSign.server
                 {
                     person_id = verifyPerson.person_id,
                     name = verifyPerson.name,
+                    type = verifyPerson.type,
                     temperature = model.temperature,
                     RealTimeFace = model.faceimg,
                     smiliaty = maxSmiliaty

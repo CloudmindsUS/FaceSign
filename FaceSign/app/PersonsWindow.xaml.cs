@@ -129,6 +129,7 @@ namespace FaceSign.app
             {
                 if (doing)
                 {
+                    PersonInfo.Foreground = new SolidColorBrush(Colors.White);
                     if (BuildConfig.IRType == BuildConfig.IR_G120
                     ||BuildConfig.IRType==BuildConfig.IR_M120)
                     {
@@ -154,11 +155,24 @@ namespace FaceSign.app
             Timer?.Stop();
         }
 
+        private System.Windows.Media.Color GetColor(System.Drawing.Color drawColor)
+        {
+            return System.Windows.Media.Color.FromArgb(drawColor.A, drawColor.R, drawColor.G, drawColor.B);
+        }
+
         private void Instance_OnPersonShow(model.PersonModel person)
         {
             Dispatcher.Invoke(()=> {
                 if (Timer != null&&Timer.IsEnabled) {
                     Timer.Stop();
+                }
+                if (person.type == "8" && BuildConfig.IsSupportBlacklist)
+                {
+                    PersonInfo.Foreground = new SolidColorBrush(Colors.Red);
+                }
+                else
+                {
+                    PersonInfo.Foreground = new SolidColorBrush(Colors.White);
                 }
                 if (BuildConfig.IRType == BuildConfig.IR_XT236)
                 {

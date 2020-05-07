@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "FaceSign"
-#define MyAppVersion "2.0.3"
-#define AppVersionCode "203"
+#define MyAppVersion "2.0.5"
+#define AppVersionCode "205"
 #define MyAppPublisher "CloudMinds Company, Inc."
 #define MyAppURL "https://www.cloudminds.com/"
 #define MyAppExeName "FaceSign.exe"

@@ -256,6 +256,11 @@ namespace FaceSign.server
                             {
                                 _HasAlarm = true;
                                 OnDataReceived?.Invoke("金属报警触发");
+                                if (Timer!=null)
+                                {
+                                    Timer.Stop();
+                                }
+                                IsOpening = false;
                                 //CloseDoor();
                             }
                         }
@@ -291,7 +296,6 @@ namespace FaceSign.server
                 try
                 {
                     SerialPort.Write(data, 0, data.Length);
-                    Log.I("send:" + ByteUtil.BytesToString(data));
                     //OnDataReceived?.Invoke("send:" + ByteUtil.BytesToString(data));
                 }
                 catch (Exception e)
@@ -321,6 +325,13 @@ namespace FaceSign.server
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            if (HasAlarm)
+            {
+                IsOpening = false;
+                Log.I("alarm not open door");
+                OnDataReceived?.Invoke("alarm not open door");
+                return;
+            }
             byte[] command = { 0xFF, 0x05, 0x00, 0x00, 0xFF, 0x00, 0x99, 0xE4 };
             SendData(command);
             Log.I("open door");
