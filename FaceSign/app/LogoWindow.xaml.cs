@@ -32,7 +32,7 @@ namespace FaceSign.app
             if (BuildConfig.IRType == BuildConfig.IR_G120
                 ||BuildConfig.IRType.Equals(BuildConfig.IR_M120))
             {
-                if (!BuildConfig.IsSupportAI) {
+                if (!BuildConfig.IsSupportUploadData) {
                     G120.Visibility = Visibility.Visible;
                 }
             }

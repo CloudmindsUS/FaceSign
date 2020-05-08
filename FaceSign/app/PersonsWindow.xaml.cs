@@ -108,8 +108,11 @@ namespace FaceSign.app
             };
             var rep = await ApiService.Init(req);
             Log.I("Init Device:"+rep.code);
-            DownloadPersonServer.GetInstance().Start(terminalId);
-            DownloadPersonServer.GetInstance().onUpdatePerson += PersonsWindow_onUpdatePerson;
+            if (BuildConfig.IsSupportAI)
+            {
+                DownloadPersonServer.GetInstance().Start(terminalId);
+                DownloadPersonServer.GetInstance().onUpdatePerson += PersonsWindow_onUpdatePerson;
+            }
             HttpWebServer.Instance.OnPersonShow += Instance_OnPersonShow;
             TrafficStatisticsManager.Instance.OnPersonCountShow += Instance_OnPersonCountShow;
             HttpWebServer.Instance.Start(terminalId);

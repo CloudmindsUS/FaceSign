@@ -107,7 +107,14 @@ namespace FaceSign.server
                     {
                         if (model.temperature >= 20)
                         {
-                            ParseAlarm(model);
+                            if (BuildConfig.IsSupportAI)
+                            {
+                                ParseAlarm(model);
+                            }
+                            else
+                            {
+                                PostStranger(model, -1);
+                            }
                         }
                     }
                 }

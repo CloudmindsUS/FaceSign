@@ -1,6 +1,6 @@
-﻿//using Emgu.CV;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,16 +11,21 @@ namespace FaceSign.server
     {
         public static readonly RtspManager Instance = new RtspManager();
 
-        //Capture Capture;
+        public void Start()
+        {
+            //Task.Factory.StartNew(StartNginx);
+        }
 
-        //private RtspManager()
-        //{
-        //   Capture =  new Capture();
-        //   Capture.ImageGrabbed += Capture_ImageGrabbed;
-        //}
-
-        //private void Capture_ImageGrabbed(object sender, EventArgs e)
-        //{
-        //}
+        private void StartNginx()
+        {
+            var process = Process.GetProcessesByName("nginx");
+            if (process != null)
+            {
+                foreach(var p in process)
+                {
+                    p.Kill();
+                }
+            }
+        }
     }
 }

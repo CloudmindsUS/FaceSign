@@ -17,6 +17,7 @@ namespace FaceSign.data
         public const string ChannelM120_AI = "ChannelM120_AI";
         public const string Channel_DT_Hospital = "Channel_DT_Hospital";
         public const string Channel_JL = "Channel_JL";
+        public const string Channel_America = "Channel_America";
 
         public const string IR_G120 = "IR_G120";
         public const string IR_XT236 = "IR_XT236";
@@ -27,7 +28,7 @@ namespace FaceSign.data
         public static bool Debug = false;
 
         public static string AppName = "";
-        public static string ChannelType = Channel_DT_Hospital;
+        public static string ChannelType = Channel_America;
         public static string IRType = IR_G120;
         //是否支持人脸识别
         public static bool IsSupportAI = false;
@@ -39,6 +40,8 @@ namespace FaceSign.data
         public static bool IsSupportBlacklist = false;
         //是否支持人流量统计
         public static bool IsSupportTrafficStatistics = false;
+        //是否支持网络上报
+        public static bool IsSupportUploadData = false;
 
 
         public static void Init() {
@@ -74,7 +77,18 @@ namespace FaceSign.data
             {
                 InitJL();
             }
+            else if (BuildConfig.ChannelType.Equals(Channel_America))
+            {
+                InitAmerica();
+            }
 
+        }
+
+        private static void InitAmerica()
+        {
+            AppName = "FaceSign_America";
+            IRType = IR_G120;
+            IsSupportUploadData = true;
         }
 
         private static void InitJL()
@@ -83,12 +97,14 @@ namespace FaceSign.data
             IRType = IR_M120;
             IsSupportAI = true;
             IsSupportTrafficStatistics = true;
+            IsSupportUploadData = true;
         }
 
         private static void InitDT_Hospital()
         {
             AppName = "FaceSign_DT_Hospital";
             IRType = IR_G120;
+            IsSupportUploadData = true;
             IsSupportAI = true;
             IsSupportMetalDetection = true;
             IsSupportAccessControl = true;
@@ -100,6 +116,7 @@ namespace FaceSign.data
         {
             AppName = "FaceSign_M120_AI";
             IRType = IR_M120;
+            IsSupportUploadData = true;
             IsSupportAI = true;
         }
 
@@ -113,6 +130,7 @@ namespace FaceSign.data
         {
             IRType = IR_XT236;
             IsSupportAI = true;
+            IsSupportUploadData = true;
             AppName = "FaceSign_XT236_AI";
         }
 
@@ -127,6 +145,7 @@ namespace FaceSign.data
         {
             IRType = IR_G120;
             IsSupportAI = true;
+            IsSupportUploadData = true;
             AppName = "FaceSign_G120_AI";
         }
 

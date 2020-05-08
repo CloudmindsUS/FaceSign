@@ -78,16 +78,18 @@ namespace FaceSign.app
                 }
                 else
                 {
+                    RtspManager.Instance.Start();
                     if (BuildConfig.IsSupportTrafficStatistics)
                     {
                         TrafficStatisticsManager.Instance.Init();
                     }
-                    if (BuildConfig.IsSupportAI)
+                    if (BuildConfig.IsSupportUploadData)
                     {
                         Log.I("ready init");
-                        FaceManager.Instance.Init();
-                        var list = DBManager.Instance.DB.Queryable<PersonModel>().ToList();
-                        Log.I("Current People:" + list.Count);
+                        if (BuildConfig.IsSupportAI)
+                        {
+                            FaceManager.Instance.Init();
+                        }                       
                         var terminalId = SharePreference.Read(Keys.KeyTerminalId, "");
                         Log.I("login ID:" + terminalId);
                         if (string.IsNullOrEmpty(terminalId))
