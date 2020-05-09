@@ -18,17 +18,18 @@ namespace FaceSign.data
         public const string Channel_DT_Hospital = "Channel_DT_Hospital";
         public const string Channel_JL = "Channel_JL";
         public const string Channel_America = "Channel_America";
+        public const string Channel_TW = "Channel_TW";
 
         public const string IR_G120 = "IR_G120";
         public const string IR_XT236 = "IR_XT236";
         public const string IR_M120 = "IR_M120";
 
-        public const string VersionName = "2.0.5";
-        public const int VersionCode = 205;
+        public const string VersionName = "2.0.6";
+        public const int VersionCode = 206;
         public static bool Debug = false;
 
         public static string AppName = "";
-        public static string ChannelType = Channel_America;
+        public static string ChannelType = Channel_DT_Hospital;
         public static string IRType = IR_G120;
         //是否支持人脸识别
         public static bool IsSupportAI = false;
@@ -42,6 +43,8 @@ namespace FaceSign.data
         public static bool IsSupportTrafficStatistics = false;
         //是否支持网络上报
         public static bool IsSupportUploadData = false;
+        //是否支持RTSP 转发
+        public static bool IsSupportRtsp2Hls = false;
 
 
         public static void Init() {
@@ -81,7 +84,20 @@ namespace FaceSign.data
             {
                 InitAmerica();
             }
+            else if (BuildConfig.ChannelType.Equals(Channel_TW))
+            {
+                InitTW();
+            }
 
+        }
+
+        private static void InitTW()
+        {
+            AppName = "FaceSign_TW";
+            IRType = IR_G120;
+            IsSupportAI = true;
+            IsSupportUploadData = true;
+            IsSupportRtsp2Hls = true;
         }
 
         private static void InitAmerica()

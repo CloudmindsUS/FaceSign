@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -30,6 +31,8 @@ namespace FaceSign.app
     {
         MemoryStream MMS;
         DispatcherTimer Timer;
+        DispatcherTimer StopWarningTimer;
+        SoundPlayer WarningPlayer;
         Label PersonInfo;
         Image Avater;
         string terminalId;
@@ -62,13 +65,9 @@ namespace FaceSign.app
             {
                 PersonCount.Visibility = Visibility.Visible;
             }
+            WarningPlayer = new SoundPlayer("warning.wav");
             InitOrBindDeviceAsync();
-            OpenIR();
-            //if (BuildConfig.IsSupportAccessControl)
-            //{
-            //    new SerialPortWindow().Show();
-            //    new DebugWindow().Show();
-            //}
+            OpenIR();            
         }
 
         private void PersonsWindow_KeyDown(object sender, KeyEventArgs e)
@@ -156,6 +155,11 @@ namespace FaceSign.app
             MMS?.Close();
             MMS?.Dispose();
             Timer?.Stop();
+            StopWarningTimer?.Stop();
+            if (WarningPlayer != null)
+            {
+                WarningPlayer.Stop();
+            }
         }
 
         private System.Windows.Media.Color GetColor(System.Drawing.Color drawColor)
@@ -169,9 +173,18 @@ namespace FaceSign.app
                 if (Timer != null&&Timer.IsEnabled) {
                     Timer.Stop();
                 }
+                if (StopWarningTimer != null && StopWarningTimer.IsEnabled)
+                {
+                    StopWarningTimer.Stop();
+                }
                 if (person.type == "8" && BuildConfig.IsSupportBlacklist)
                 {
                     PersonInfo.Foreground = new SolidColorBrush(Colors.Red);
+                    WarningPlayer.PlayLooping();
+                    StopWarningTimer = new DispatcherTimer();
+                    StopWarningTimer.Interval = TimeSpan.FromSeconds(5);
+                    StopWarningTimer.Tick += StopWarningTimer_Tick;
+                    StopWarningTimer.Start();
                 }
                 else
                 {
@@ -187,6 +200,11 @@ namespace FaceSign.app
                 Avater.Source = GetBitmap(person.RealTimeFace);                
                 CreateTimer();
             });
+        }
+
+        private void StopWarningTimer_Tick(object sender, EventArgs e)
+        {
+            WarningPlayer.Stop();
         }
 
         private void CreateTimer()
