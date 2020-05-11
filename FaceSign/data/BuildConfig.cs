@@ -29,7 +29,7 @@ namespace FaceSign.data
         public static bool Debug = false;
 
         public static string AppName = "";
-        public static string ChannelType = Channel_DT_Hospital;
+        public static string ChannelType = Channel_TW;
         public static string IRType = IR_G120;
         //是否支持人脸识别
         public static bool IsSupportAI = false;
@@ -95,7 +95,7 @@ namespace FaceSign.data
         {
             AppName = "FaceSign_TW";
             IRType = IR_G120;
-            IsSupportAI = true;
+            IsSupportAI = false;
             IsSupportUploadData = true;
             IsSupportRtsp2Hls = true;
         }
@@ -104,6 +104,7 @@ namespace FaceSign.data
         {
             AppName = "FaceSign_America";
             IRType = IR_G120;
+            IsSupportTrafficStatistics = true;
             IsSupportUploadData = true;
         }
 

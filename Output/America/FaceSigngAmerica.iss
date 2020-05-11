@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "FaceSign"
-#define MyAppVersion "2.0.5"
-#define AppVersionCode "205"
+#define MyAppVersion "2.0.6"
+#define AppVersionCode "206"
 #define MyAppPublisher "CloudMinds Company, Inc."
 #define MyAppURL "https://www.cloudminds.com/"
 #define MyAppExeName "FaceSign.exe"
@@ -41,6 +41,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "..\..\FaceSign\bin\x64\Release\FaceSign.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\..\FaceSign\bin\x64\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ;Source: "..\AILib\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\..\TraffLib\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "D:\IR_G120\*"; DestDir: "{app}\IR_G120"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

@@ -78,10 +78,14 @@ namespace FaceSign.app
                 }
                 else
                 {
-                    RtspManager.Instance.Start();
+                    
                     if (BuildConfig.IsSupportTrafficStatistics)
                     {
                         TrafficStatisticsManager.Instance.Init();
+                    }
+                    if (BuildConfig.IsSupportRtsp2Hls)
+                    {
+                        RtspManager.Instance.Start();
                     }
                     if (BuildConfig.IsSupportUploadData)
                     {

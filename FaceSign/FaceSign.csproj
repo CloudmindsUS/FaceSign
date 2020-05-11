@@ -290,6 +290,7 @@
     </Resource>
     <None Include="libs\start_ir_g120.bat" />
     <None Include="libs\start_ir_m120.bat" />
+    <None Include="libs\start_nginx.bat" />
     <None Include="libs\start_ir_xt236.bat" />
     <None Include="libs\update.bat" />
     <None Include="OpenTK.dll.config" />
