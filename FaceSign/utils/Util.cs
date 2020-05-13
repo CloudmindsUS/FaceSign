@@ -67,7 +67,7 @@ namespace FaceSign.utils
 
         public static void StartIR()
         {
-            if (ShouldOpen()) {
+            if (!GuideAppIsRunning()) {
                 var path = BuildConfig.GetIRExePath();
                 Log.I("IR Path:" + path);
                 var process = new Process();
@@ -86,7 +86,7 @@ namespace FaceSign.utils
             }            
         }
 
-        private static bool ShouldOpen()
+        public static bool GuideAppIsRunning()
         {
             var windowNameCN = "全自动红外热成像测温筛查系统";
             var windowNameEN = "IR Fever Warning System";
@@ -102,27 +102,18 @@ namespace FaceSign.utils
                 windowNameEN = "IR Fever Warning System";
                 name = "M120";
             }
-            var handleCN = Win32Api.FindWindow(null, windowNameCN);
-            var handleEN = Win32Api.FindWindow(null,windowNameEN);
-            if (handleCN != IntPtr.Zero||handleEN!=IntPtr.Zero) {
-                return false;
-            }
-            var processes = Process.GetProcesses();
-            if (processes != null) {
-                foreach (var ps in processes) {
-                    if (name.Equals(ps.ProcessName))
+            var processes = Process.GetProcessesByName(name);
+            if (processes != null)
+            {
+                foreach (var ps in processes)
+                {
+                    if (ps.MainWindowTitle == windowNameCN || ps.MainWindowTitle == windowNameEN)
                     {
-                        Log.I("Kill PS" + ps.ProcessName);
-                        try
-                        {
-                            ps.Kill();
-                        }
-                        catch (Exception) { }
+                        return true;
                     }
-
                 }
-            }
-            return true;
+            }            
+            return false;
         }
     }
 }

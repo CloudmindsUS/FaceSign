@@ -28,27 +28,8 @@ namespace FaceSign.server
         private void Check()
         {
             Thread.Sleep(30*1000);
-            while (true) {
-                var windowNameCN = "全自动红外热成像测温筛查系统";
-                var windowNameEN = "IR Fever Warning System";
-                var name = "ZS05A";
-                if (BuildConfig.IRType.Equals(BuildConfig.IR_XT236))
-                {
-                    windowNameCN = "IR Fever Sensing System";
-                    windowNameEN = "IR Fever Sensing System";
-                    name = "S260.CoreUI";
-                }
-                else if (BuildConfig.IRType.Equals(BuildConfig.IR_M120))
-                {
-                    windowNameCN = "全自动红外热成像测温筛查系统";
-                    windowNameEN = "IR Fever Warning System";
-                    name = "M120";
-                }
-                var pr = Process.GetProcessesByName(name);
-                var handleCN = Win32Api.FindWindow(null, windowNameCN);
-                var handleEN = Win32Api.FindWindow(null, windowNameEN);
-                var hasWindow = (handleCN != IntPtr.Zero || handleEN != IntPtr.Zero);
-                if (pr != null && pr.Length > 0 && hasWindow)
+            while (true) {                
+                if (Util.GuideAppIsRunning())
                 {
                     Thread.Sleep(1000);
                 }
