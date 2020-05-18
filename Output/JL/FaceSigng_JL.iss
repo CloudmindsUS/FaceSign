@@ -43,6 +43,7 @@ Source: "..\..\FaceSign\bin\x64\Release\*"; DestDir: "{app}"; Flags: ignoreversi
 Source: "..\..\FaceLib\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\..\TraffLib\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "D:\IR_M120\*"; DestDir: "{app}\IR_M120"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\System.ini"; DestDir: "{app}\IR_M120"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
