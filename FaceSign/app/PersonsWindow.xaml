@@ -28,7 +28,7 @@
                 <Label Name="XT236PersonInfo" Foreground="White" VerticalAlignment="Center" FontSize="50"></Label>
             </StackPanel>
         </Grid>
-        <Grid  Visibility="Visible" Name="G120" Width="294" Height="203" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,70,0,0" >
+        <Grid  Visibility="Hidden" Name="G120" Width="294" Height="203" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,70,0,0" >
             
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <Image Source="/FaceSign;component/Resources/logo_g120.png"></Image>

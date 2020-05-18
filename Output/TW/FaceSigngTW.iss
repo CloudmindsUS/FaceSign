@@ -40,7 +40,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "..\..\FaceSign\bin\x64\Release\FaceSign.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\..\FaceSign\bin\x64\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-;Source: "..\AILib\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\..\FaceLib\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\..\hls_server\*"; DestDir: "{app}\hls_server"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "D:\IR_G120\*"; DestDir: "{app}\IR_G120"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: ".\System.ini"; DestDir: "{app}\IR_G120"; Flags: ignoreversion recursesubdirs createallsubdirs
