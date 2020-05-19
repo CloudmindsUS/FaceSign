@@ -153,7 +153,6 @@ namespace FaceSign.http
 
 
 
-
         public static T Get<T>(RequestParam requestParam) where T : Response, new()
         {
             var response = new T();
@@ -246,6 +245,58 @@ namespace FaceSign.http
                 var input = req.GetRequestStream();
                 var buffer = Encoding.UTF8.GetBytes(param);
                 input.Write(buffer,0,buffer.Length);
+                input.Close();
+                var res = (HttpWebResponse)req.GetResponse();
+                if (res.StatusCode == HttpStatusCode.OK)
+                {
+                    var stream = res.GetResponseStream();
+                    if (stream != null)
+                    {
+                        reader = new StreamReader(stream, Encoding.UTF8);
+                        var data = reader.ReadToEnd();
+                        Log.I(Tag, "Post Result:\r\n" + data);
+                        response = JsonConvert.DeserializeObject<T>(data);
+                    }
+                    else
+                    {
+                        response.code = -1;
+                        response.message = "网络请求异常";
+                    }
+                }
+                else
+                {
+                    response.code = -1;
+                    response.message = $@"网络请求异常({res.StatusCode})";
+                }
+            }
+            catch (Exception e)
+            {
+                Log.I(Tag, $@"request {requestParam.Url} {param} :" + e.Message);
+                response.code = -1;
+                response.message = "网络请求异常";
+            }
+            return response;
+        }
+
+        public static T Post<T>(string host,RequestParam requestParam) where T : Response, new()
+        {
+            var response = new T();
+            StreamReader reader = null;
+            HttpWebRequest req = null;
+            var param = CreatePostParam(requestParam);
+            Log.I(Tag, "Post Param:\r\n" + param);
+            try
+            {
+                req = (HttpWebRequest)WebRequest.Create($@"http://{host}/{requestParam.Url}");
+                req.Method = WebRequestMethods.Http.Post;
+                req.AllowAutoRedirect = true;
+                req.Timeout = requestParam.TimeOut;
+                req.KeepAlive = false;
+                req.Accept = "*/*";
+                req.ContentType = "application/json";
+                var input = req.GetRequestStream();
+                var buffer = Encoding.UTF8.GetBytes(param);
+                input.Write(buffer, 0, buffer.Length);
                 input.Close();
                 var res = (HttpWebResponse)req.GetResponse();
                 if (res.StatusCode == HttpStatusCode.OK)

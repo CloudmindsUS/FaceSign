@@ -10,6 +10,7 @@ namespace FaceSign.http.req
     {
         public string terminal_id="";
         public string person_id="";
+        public string person_name = "";
         public string image="";
         public string open_type = "1";
         public string open_time {

@@ -194,7 +194,7 @@ namespace FaceSign.server
             PersonModel person = new PersonModel
             {
                 person_id = "-1",
-                name = "unknown",
+                name = "",
                 temperature = model.temperature,
                 RealTimeFace = model.faceimg,
                 smiliaty = maxSmiliaty
@@ -212,9 +212,11 @@ namespace FaceSign.server
                 image = model.faceimg,
                 person_id = person.person_id,
                 terminal_id = TerminalId,
+                person_name = person.name,
                 temp_val = (model.temperature * 10).ToString("f0")
             };
             var rep = await ApiService.OpenGuardReport(request);
+            rep = await ApiService.OpenGuardReport(BuildConfig.OtherWebHost,request);
         }
 
        

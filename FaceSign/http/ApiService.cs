@@ -1,4 +1,5 @@
-﻿using FaceSign.http.rep;
+﻿using FaceSign.data;
+using FaceSign.http.rep;
 using FaceSign.http.req;
 using FaceSign.log;
 using System;
@@ -28,6 +29,17 @@ namespace FaceSign.http
             };
             return await Task.Run<Response>(() => {
                 return HttpManager.Post<Response>(param);
+            });
+        }
+
+        public async static Task<Response> OpenGuardReport(string host,OpenGuardReportRequest request)
+        {
+            RequestParam param = new RequestParam(BuildConfig.OtherWebPath)
+            {
+                PostParam = request
+            };
+            return await Task.Run<Response>(() => {
+                return HttpManager.Post<Response>(host,param);
             });
         }
 

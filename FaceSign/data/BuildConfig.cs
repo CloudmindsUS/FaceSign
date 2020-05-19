@@ -29,8 +29,10 @@ namespace FaceSign.data
         public static bool Debug = false;
 
         public static string AppName = "";
-        public static string ChannelType = Channel_JL;
+        public static string ChannelType = Channel_America;
         public static string IRType = IR_G120;
+        public static string OtherWebHost = "10.11.101.188:8000";
+        public static string OtherWebPath = "face-sign/reportAlarm";
         //是否支持人脸识别
         public static bool IsSupportAI = false;
         //是否支持金属检测（北京地坛医院专用）
@@ -45,6 +47,8 @@ namespace FaceSign.data
         public static bool IsSupportUploadData = false;
         //是否支持RTSP 转发
         public static bool IsSupportRtsp2Hls = false;
+        //是否支持转发测温、人脸数据到其他web平台
+        public static bool IsSupportPostOtherWebServer = false;
 
 
         public static void Init() {
@@ -105,8 +109,10 @@ namespace FaceSign.data
             AppName = "FaceSign_America";
             IRType = IR_G120;
             IsSupportAI = true;
-            IsSupportTrafficStatistics = true;
+            IsSupportTrafficStatistics = false;
             IsSupportUploadData = true;
+            IsSupportPostOtherWebServer = true;
+            OtherWebHost = "10.11.101.188:8000";
         }
 
         private static void InitJL()

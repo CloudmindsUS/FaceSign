@@ -1,4 +1,5 @@
 ﻿using FaceSign.data;
+using FaceSign.log;
 using FaceSign.utils;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,7 @@ namespace FaceSign.server
                 }
                 else
                 {
+                    Log.I("Guide App not run,ready stopself");
                     Process.GetCurrentProcess().Kill();
                 }
             }

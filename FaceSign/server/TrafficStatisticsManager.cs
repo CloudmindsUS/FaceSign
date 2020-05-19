@@ -132,7 +132,10 @@ namespace FaceSign.server
         {
             LastGrabTime = DateTime.Now;
             Emgu.CV.Mat mat = new Emgu.CV.Mat();
-            capture.Retrieve(mat);
+            if (!CaptureMat(mat))
+            {
+                return;
+            }
             if (IsDetect) return;
             IsDetect = true;
             Task.Factory.StartNew(() => {
@@ -146,6 +149,21 @@ namespace FaceSign.server
                 OnPersonCountShow?.Invoke(PersonCount);
                 IsDetect = false;
             });
+        }
+
+        [System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptions]
+        private bool CaptureMat(Mat mat)
+        {
+            try
+            {
+                capture.Retrieve(mat);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.I("Retrieve fail:"+e?.GetType()+";"+e?.Message);
+                return false;
+            }
         }
     }
 }
