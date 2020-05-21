@@ -32,6 +32,7 @@ namespace FaceSign.app
         MemoryStream MMS;
         DispatcherTimer Timer;
         DispatcherTimer StopWarningTimer;
+        DispatcherTimer FahrenheitTimer;
         SoundPlayer WarningPlayer;
         Label PersonInfo;
         Image Avater;
@@ -113,9 +114,37 @@ namespace FaceSign.app
                 DownloadPersonServer.GetInstance().onUpdatePerson += PersonsWindow_onUpdatePerson;
             }
             HttpWebServer.Instance.OnPersonShow += Instance_OnPersonShow;
+            HttpWebServer.Instance.OnFahrenheitShow += Instance_OnFahrenheitShow;
             TrafficStatisticsManager.Instance.OnPersonCountShow += Instance_OnPersonCountShow;
             HttpWebServer.Instance.Start(terminalId);
             CheckUpdateServer.GetInstance().Start(terminalId);
+        }
+
+        private void Instance_OnFahrenheitShow(model.IsAlarmPointModel model)
+        {            
+            Dispatcher.Invoke(() =>
+            {
+                if (Fahrenheit.Visibility == Visibility.Hidden)
+                {
+                    Fahrenheit.Visibility = Visibility.Visible;
+                }
+                if (FahrenheitTimer != null)
+                {
+                    FahrenheitTimer.Tick -= FahrenheitTimer_Tick;
+                    FahrenheitTimer.Stop();
+                }                
+                Fahrenheit.Margin = new Thickness(960+100+model.X, 160+100+model.Y, 0, 0);
+                Fahrenheit.Content = model.temperature.ToString("F1")+"F°";
+                FahrenheitTimer = new DispatcherTimer();
+                FahrenheitTimer.Tick += FahrenheitTimer_Tick;
+                FahrenheitTimer.Interval = TimeSpan.FromSeconds(1);
+                FahrenheitTimer.Start();
+            });
+        }
+
+        private void FahrenheitTimer_Tick(object sender, EventArgs e)
+        {
+            Fahrenheit.Visibility = Visibility.Hidden;
         }
 
         private void Instance_OnPersonCountShow(int count)
@@ -156,6 +185,7 @@ namespace FaceSign.app
             MMS?.Dispose();
             Timer?.Stop();
             StopWarningTimer?.Stop();
+            FahrenheitTimer?.Stop();
             if (WarningPlayer != null)
             {
                 WarningPlayer.Stop();

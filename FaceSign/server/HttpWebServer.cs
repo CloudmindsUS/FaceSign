@@ -19,12 +19,14 @@ namespace FaceSign.server
     public class HttpWebServer
     {
         public delegate void ShowPerson(PersonModel person);
+        public delegate void ShowFahrenheit(IsAlarmPointModel model);
         public static HttpWebServer Instance = new HttpWebServer();
 
         private HttpListener listener;
 
         public string UUID { get; private set; }
         public event ShowPerson OnPersonShow;
+        public event ShowFahrenheit OnFahrenheitShow;
         string TerminalId;
         float Confidence = FaceManager.FaceConfidence;
 
@@ -105,6 +107,11 @@ namespace FaceSign.server
                 {
                     foreach (var model in AlarmEvent.AlarmPointList)
                     {
+                        if (BuildConfig.IsSupportFahrenheit)
+                        {
+                            Log.I("坐标:"+model.X+","+model.Y);
+                            OnFahrenheitShow?.Invoke(model);
+                        }
                         if (model.temperature >= 20)
                         {
                             if (BuildConfig.IsSupportAI)

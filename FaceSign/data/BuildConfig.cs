@@ -49,6 +49,8 @@ namespace FaceSign.data
         public static bool IsSupportRtsp2Hls = false;
         //是否支持转发测温、人脸数据到其他web平台
         public static bool IsSupportPostOtherWebServer = false;
+        //是否支持显示华氏度温度
+        public static bool IsSupportFahrenheit = false;
 
 
         public static void Init() {
@@ -107,12 +109,13 @@ namespace FaceSign.data
         private static void InitAmerica()
         {
             AppName = "FaceSign_America";
-            IRType = IR_G120;
-            IsSupportAI = true;
+            IRType = IR_XT236;
+            IsSupportAI = false;
             IsSupportTrafficStatistics = false;
             IsSupportUploadData = true;
-            IsSupportPostOtherWebServer = true;
+            IsSupportPostOtherWebServer = false;
             OtherWebHost = "10.11.101.188:8000";
+            IsSupportFahrenheit = true;
         }
 
         private static void InitJL()

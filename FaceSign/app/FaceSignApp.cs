@@ -7,7 +7,6 @@ using FaceSign.model;
 using FaceSign.server;
 using FaceSign.utils;
 using Newtonsoft.Json;
-using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

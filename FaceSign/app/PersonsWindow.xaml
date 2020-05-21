@@ -47,6 +47,12 @@
             FontSize="28"
             Foreground="White" HorizontalAlignment="Right" 
             VerticalAlignment="Bottom"></Label>
-
+        <Label
+            Width="50"
+            Height="30"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Visibility="Hidden"
+            x:Name="Fahrenheit" Foreground="White" Background="Black" FontSize="20"></Label>
     </Grid>
 </Window>
