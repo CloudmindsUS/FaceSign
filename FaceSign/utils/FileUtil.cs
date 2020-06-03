@@ -13,6 +13,7 @@ namespace FaceSign.utils
 
         public static string GetAppRootPath() {
             return AppDomain.CurrentDomain.BaseDirectory;
+
         }
 
         public static string GetLogDirPath()
