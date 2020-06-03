@@ -18,25 +18,21 @@ namespace FaceSign.data
         public const string Channel_DT_Hospital = "Channel_DT_Hospital";
         public const string Channel_JL = "Channel_JL";
         public const string Channel_America = "Channel_America";
-        public const string Channel_America_notraffic = "Channel_America_notraffic";
-        public const string Channel_America_AI = "Channel_America_AI";
         public const string Channel_TW = "Channel_TW";
 
         public const string IR_G120 = "IR_G120";
         public const string IR_XT236 = "IR_XT236";
         public const string IR_M120 = "IR_M120";
 
-        public const string VersionName = "2.0.7";
-        public const int VersionCode = 207;
+        public const string VersionName = "2.0.6";
+        public const int VersionCode = 206;
         public static bool Debug = false;
 
         public static string AppName = "";
-        public static string ChannelType = Channel_America_notraffic;
+        public static string ChannelType = Channel_America;
         public static string IRType = IR_G120;
-
-        public static string OtherWebHost = "35.239.42.32:8000";
-        public static string OtherWebPath = "face-sign/reportAlarm";
-
+        //public static string OtherWebHost = "35.239.42.32:8000";
+        //public static string OtherWebPath = "face-sign/reportAlarm";
         //是否支持人脸识别
         public static bool IsSupportAI = false;
         //是否支持金属检测（北京地坛医院专用）
@@ -51,7 +47,9 @@ namespace FaceSign.data
         public static bool IsSupportUploadData = false;
         //是否支持RTSP 转发
         public static bool IsSupportRtsp2Hls = false;
-
+        //是否支持转发测温、人脸数据到其他web平台
+        public static bool IsSupportPostOtherWebServer = false;
+        //是否支持显示华氏度温度
         public static bool IsSupportFahrenheit = false;
 
 
@@ -92,14 +90,6 @@ namespace FaceSign.data
             {
                 InitAmerica();
             }
-            else if (BuildConfig.ChannelType.Equals(Channel_America_notraffic))
-            {
-                InitAmerica_notraffic();
-            }
-            else if (BuildConfig.ChannelType.Equals(Channel_America_AI))
-            {
-                InitAmerica_AI();
-            }
             else if (BuildConfig.ChannelType.Equals(Channel_TW))
             {
                 InitTW();
@@ -111,7 +101,7 @@ namespace FaceSign.data
         {
             AppName = "FaceSign_TW";
             IRType = IR_G120;
-            IsSupportAI = false;
+            IsSupportAI = true;
             IsSupportUploadData = true;
             IsSupportRtsp2Hls = true;
         }
@@ -120,25 +110,14 @@ namespace FaceSign.data
         {
             AppName = "FaceSign_America";
             IRType = IR_G120;
-            IsSupportTrafficStatistics = true;
+            IsSupportAI = false;
+            IsSupportTrafficStatistics = false;
             IsSupportUploadData = true;
+            IsSupportPostOtherWebServer = false;
+            OtherWebHost = "10.11.101.188:8000";
+            IsSupportFahrenheit = true;
         }
 
-        private static void InitAmerica_notraffic()
-        {
-            AppName = "FaceSign_America_notraffic";
-            IRType = IR_G120;
-            IsSupportUploadData = true;
-        }
-
-        private static void InitAmerica_AI()
-        {
-            AppName = "FaceSign_America_AI";
-            IRType = IR_G120;
-            IsSupportAI = true;
-            IsSupportTrafficStatistics = true;
-            IsSupportUploadData = true;
-        }
         private static void InitJL()
         {
             AppName = "FaceSign_JL";
@@ -213,13 +192,8 @@ namespace FaceSign.data
             {
                 path = $@"start_ir_xt236.bat";
             }
-            else if (BuildConfig.IR_M120.Equals(BuildConfig.IRType))
-            {
+            else if (BuildConfig.IR_M120.Equals(BuildConfig.IRType)) {
                 path = $@"start_ir_m120.bat";
-            }
-            else if (BuildConfig.IR_G120.Equals(BuildConfig.IRType))
-            {
-                path = $@"start_ir_g120.bat";
             }
             return $@"{path}";
         }

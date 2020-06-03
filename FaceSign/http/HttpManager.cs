@@ -15,7 +15,8 @@ namespace FaceSign.http
         public static HttpManager Instance = new HttpManager();
         public static int TimeOut = 15 * 1000;
         public static string Tag = "HttpManager";
-        public static string Host = "52.81.26.63";
+        //public static string Host = "52.81.26.63";
+        public static string Host = "35.239.42.32";
 
         public static bool DownloadFile(string filePath, string url)
         {
