@@ -107,7 +107,7 @@ namespace FaceSign.app
                 hardkey = hardkey
             };
             var rep = await ApiService.Init(req);
-            Log.I("Init Device:"+rep.code);
+            Log.I("IInit Device:"+rep.code);
             if (BuildConfig.IsSupportAI)
             {
                 DownloadPersonServer.GetInstance().Start(terminalId);
@@ -132,9 +132,13 @@ namespace FaceSign.app
                 {
                     FahrenheitTimer.Tick -= FahrenheitTimer_Tick;
                     FahrenheitTimer.Stop();
-                }                
-                Fahrenheit.Margin = new Thickness(960+100+model.X, 160+100+model.Y, 0, 0);
-                Fahrenheit.Content = model.temperature.ToString("F1")+"F°";
+                }
+                //Fahrenheit.Margin = new Thickness(960+100+model.X, 160+100+model.Y, 0, 0);
+                Fahrenheit.Margin = new Thickness(960 - 127 + model.X, 5 + model.Y, 0, 0);
+                //Fahrenheit.Margin = new Thickness(817 + (int)model.X/1.88, 20 + (int)model.Y / 1.88, 0, 0);
+                float tmp = (model.temperature * 9) / 5 + 32;
+                Fahrenheit.Content = "  " + tmp.ToString("F1") + "F°";
+                //Fahrenheit.Content = model.temperature.ToString("F1") + "F°";
                 FahrenheitTimer = new DispatcherTimer();
                 FahrenheitTimer.Tick += FahrenheitTimer_Tick;
                 FahrenheitTimer.Interval = TimeSpan.FromSeconds(1);
@@ -222,10 +226,18 @@ namespace FaceSign.app
                 }
                 if (BuildConfig.IRType == BuildConfig.IR_XT236)
                 {
-                    PersonInfo.Content = $@"{person.name} {person.temperature.ToString("f1")}℃";
+                    //PersonInfo.Content = $@"{person.name} {person.temperature.ToString("f1")}℃";
+                    PersonInfo.Content = $@"{person.name} {(person.temperature * 1.8 + 32).ToString("f1")}°F";
+
+                }
+                if (BuildConfig.IRType == BuildConfig.IR_G120)
+                {
+                    //PersonInfo.Content = $@"{person.name} {person.temperature.ToString("f1")}℃";
+                    PersonInfo.Content = $@"{person.name} {(person.temperature * 1.8 + 32).ToString("f1")}°F";
+
                 }
                 else {
-                    PersonInfo.Content = $@"{person.name}{System.Environment.NewLine}{person.temperature.ToString("f1")}℃";
+                    PersonInfo.Content = $@"{person.name}{System.Environment.NewLine}{(person.temperature * 1.8 + 32).ToString("f1")}°F";
                 }
                 Avater.Source = GetBitmap(person.RealTimeFace);                
                 CreateTimer();

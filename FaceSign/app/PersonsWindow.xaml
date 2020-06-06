@@ -48,11 +48,11 @@
             Foreground="White" HorizontalAlignment="Right" 
             VerticalAlignment="Bottom"></Label>
         <Label
-            Width="50"
-            Height="30"
+            Width="110"
+            Height="40"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Visibility="Hidden"
-            x:Name="Fahrenheit" Foreground="White" Background="Black" FontSize="20"></Label>
+            x:Name="Fahrenheit" Foreground="White" Background="#FF5454F1" FontSize="24"></Label>
     </Grid>
 </Window>

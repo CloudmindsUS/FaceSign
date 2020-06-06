@@ -13,6 +13,11 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
+using Emgu.CV;
+using Emgu.Util;
+using Emgu.CV.Structure;
+using Emgu.CV.CvEnum;
 
 namespace FaceSign.server
 {
@@ -102,29 +107,77 @@ namespace FaceSign.server
             {
                 var postData = new StreamReader(request.InputStream).ReadToEnd();
                 //Log.I("接收到的数据："+postData);
-                IsAlarmEventModel AlarmEvent = JsonConvert.DeserializeObject<IsAlarmEventModel>(postData);                
+                IsAlarmEventModel AlarmEvent = JsonConvert.DeserializeObject<IsAlarmEventModel>(postData);
+
+                Bitmap rgbimage;
+                using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(AlarmEvent.visibleimg)))
+                {
+                    rgbimage = new Bitmap(ms);
+                }
+                Image<Bgr, Byte> rgbImage = rgbimage.ToImage<Bgr, Byte>();
+
                 if (AlarmEvent.AlarmPointList != null && AlarmEvent.AlarmPointList.Count > 0)
                 {
+
                     foreach (var model in AlarmEvent.AlarmPointList)
                     {
+                        Bitmap fimage;
+                        using (MemoryStream ms2 = new MemoryStream(Convert.FromBase64String(model.faceimg)))
+                        {
+                            fimage = new Bitmap(ms2);
+                        }
+                        Image<Bgr, Byte> faceImage = fimage.ToImage<Bgr, Byte>();
+
+                        //double Threshold = 0.99;
+                        Image<Gray, float> Matches = rgbImage.MatchTemplate(faceImage, TemplateMatchingType.CcoeffNormed);
+                        double max_num = 0.0;
+                        int max_x = 0;
+                        int max_y = 0;
+                        //int cnt = 0;
+
+                        for (int y = 0; y < Matches.Data.GetLength(0); y++)
+                        {
+                            for (int x = 0; x < Matches.Data.GetLength(1); x++)
+                            {
+                                //if (Matches.Data[y, x, 0] >= Threshold) //Check if its a valid match
+                                //{
+                                //    //Console.WriteLine("Matched point: " + x + y);
+                                //    cnt += 1;
+                                //}
+                                if (Matches.Data[y, x, 0] > max_num)
+                                {
+                                    max_num = Matches.Data[y, x, 0];
+                                    max_x = x;
+                                    max_y = y;                                   
+                                }
+                            }
+                        }
+                        model.X = max_x;
+                        model.Y = max_y;
+                        //Console.WriteLine("Maximum point: " + max_num + " X: " + max_x + " Y: " + max_y);
+                        //Console.WriteLine("> thresholdt: " + cnt);
+
                         if (BuildConfig.IsSupportFahrenheit)
                         {
-                            Log.I("坐标:"+model.X+","+model.Y);
+                            //Log.I("坐标:"+model.X+","+model.Y);
                             OnFahrenheitShow?.Invoke(model);
                         }
-                        if (model.temperature >= 20)
-                        {
-                            if (BuildConfig.IsSupportAI)
-                            {
-                                ParseAlarm(model);
-                            }
-                            else
-                            {
-                                PostStranger(model, -1);
-                            }
-                        }
+                        //if (model.temperature >= 20)
+                        //{
+                        //    if (BuildConfig.IsSupportAI)
+                        //    {
+                        //        ParseAlarm(model);
+                        //    }
+                        //    else
+                        //    {
+                        //        PostStranger(model, -1);
+                        //    }
+                        //}
                     }
                 }
+                
+
+
                 SendResponse("0", "success", response);
             }
             catch (Exception e) {

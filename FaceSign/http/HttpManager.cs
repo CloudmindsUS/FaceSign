@@ -233,7 +233,7 @@ namespace FaceSign.http
             StreamReader reader = null;
             HttpWebRequest req = null;
             var param = CreatePostParam(requestParam);
-            Log.I(Tag, "Post Param:\r\n" + param);
+            //Log.I(Tag, "Post Param:\r\n" + param);
             try
             {
                 req = (HttpWebRequest)WebRequest.Create($@"http://{Host}/{requestParam.Url}");
@@ -255,7 +255,7 @@ namespace FaceSign.http
                     {
                         reader = new StreamReader(stream, Encoding.UTF8);
                         var data = reader.ReadToEnd();
-                        Log.I(Tag, "Post Result:\r\n" + data);
+                        //Log.I(Tag, "Post Result:\r\n" + data);
                         response = JsonConvert.DeserializeObject<T>(data);
                     }
                     else
@@ -285,7 +285,7 @@ namespace FaceSign.http
             StreamReader reader = null;
             HttpWebRequest req = null;
             var param = CreatePostParam(requestParam);
-            Log.I(Tag, "Post Param:\r\n" + param);
+            //Log.I(Tag, "Post Param:\r\n" + param);
             try
             {
                 req = (HttpWebRequest)WebRequest.Create($@"http://{host}/{requestParam.Url}");
@@ -307,7 +307,7 @@ namespace FaceSign.http
                     {
                         reader = new StreamReader(stream, Encoding.UTF8);
                         var data = reader.ReadToEnd();
-                        Log.I(Tag, "Post Result:\r\n" + data);
+                        //Log.I(Tag, "Post Result:\r\n" + data);
                         response = JsonConvert.DeserializeObject<T>(data);
                     }
                     else

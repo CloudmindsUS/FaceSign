@@ -122,6 +122,7 @@ namespace FaceSign.data
             IRType = IR_G120;
             IsSupportTrafficStatistics = true;
             IsSupportUploadData = true;
+            IsSupportFahrenheit = true;
         }
 
         private static void InitAmerica_notraffic()
@@ -129,6 +130,7 @@ namespace FaceSign.data
             AppName = "FaceSign_America_notraffic";
             IRType = IR_G120;
             IsSupportUploadData = true;
+            IsSupportFahrenheit = true;
         }
 
         private static void InitAmerica_AI()
