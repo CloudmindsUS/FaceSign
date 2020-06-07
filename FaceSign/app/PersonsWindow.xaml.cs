@@ -21,6 +21,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Windows.Interop;
+//using System.Drawing;
 
 namespace FaceSign.app
 {
@@ -33,9 +35,12 @@ namespace FaceSign.app
         DispatcherTimer Timer;
         DispatcherTimer StopWarningTimer;
         DispatcherTimer FahrenheitTimer;
+        DispatcherTimer RgbimageTimer;
+
         SoundPlayer WarningPlayer;
         Label PersonInfo;
         Image Avater;
+        //Image rgbImageLoaded;
         string terminalId;
 
         public PersonsWindow(string id)
@@ -52,6 +57,7 @@ namespace FaceSign.app
                 G120.Visibility = Visibility.Visible;
                 PersonInfo = G120PersonInfo;
                 Avater = G120Avater;
+                //rgbImageLoaded = Image_Loaded;
             }
             else {
                 XT236.Visibility = Visibility.Visible;
@@ -115,10 +121,12 @@ namespace FaceSign.app
             }
             HttpWebServer.Instance.OnPersonShow += Instance_OnPersonShow;
             HttpWebServer.Instance.OnFahrenheitShow += Instance_OnFahrenheitShow;
+            HttpWebServer.Instance.OnImageLoaded += Instance_OnImageLoaded;
             TrafficStatisticsManager.Instance.OnPersonCountShow += Instance_OnPersonCountShow;
             HttpWebServer.Instance.Start(terminalId);
             CheckUpdateServer.GetInstance().Start(terminalId);
         }
+
 
         private void Instance_OnFahrenheitShow(model.IsAlarmPointModel model)
         {            
@@ -200,6 +208,39 @@ namespace FaceSign.app
         {
             return System.Windows.Media.Color.FromArgb(drawColor.A, drawColor.R, drawColor.G, drawColor.B);
         }
+        private void Instance_OnImageLoaded(model.IsAlarmEventModel alarm_model)
+        {
+            Dispatcher.Invoke(() => {
+                if (Timer != null && Timer.IsEnabled)
+                {
+                    Timer.Stop();
+                }
+                if (RgbimageTimer != null && RgbimageTimer.IsEnabled)
+                {
+                    RgbimageTimer.Stop();
+                }
+                if (BuildConfig.IRType == BuildConfig.IR_G120)
+                {
+                    System.Drawing.Bitmap rgbimage;
+                    using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(alarm_model.visibleimg)))
+                    {
+                        rgbimage = new System.Drawing.Bitmap(ms);
+                        IntPtr hBitmap = rgbimage.GetHbitmap();
+                        Image_Loaded.Source = Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions()); //BitmapFrame.Create(ms, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                    }
+
+                    //image.Source = GetBitmap(person.RealTimeFace);
+                    CreateTimer();
+                }
+
+
+            });
+
+        }
+        private void RgbimageTimer_Tick(object sender, EventArgs e)
+        {
+            G120_bgr_stream.Visibility = Visibility.Hidden;
+        }
 
         private void Instance_OnPersonShow(model.PersonModel person)
         {
@@ -240,7 +281,7 @@ namespace FaceSign.app
                     PersonInfo.Content = $@"{person.name}{System.Environment.NewLine}{(person.temperature * 1.8 + 32).ToString("f1")}°F";
                 }
                 Avater.Source = GetBitmap(person.RealTimeFace);                
-                CreateTimer();
+                //CreateTimer();
             });
         }
 

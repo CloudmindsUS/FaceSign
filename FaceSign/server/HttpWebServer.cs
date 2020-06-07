@@ -25,6 +25,7 @@ namespace FaceSign.server
     {
         public delegate void ShowPerson(PersonModel person);
         public delegate void ShowFahrenheit(IsAlarmPointModel model);
+        public delegate void Image_Loaded(IsAlarmEventModel alarm_model);
         public static HttpWebServer Instance = new HttpWebServer();
 
         private HttpListener listener;
@@ -32,6 +33,7 @@ namespace FaceSign.server
         public string UUID { get; private set; }
         public event ShowPerson OnPersonShow;
         public event ShowFahrenheit OnFahrenheitShow;
+        public event Image_Loaded OnImageLoaded;
         string TerminalId;
         float Confidence = FaceManager.FaceConfidence;
 
@@ -108,6 +110,7 @@ namespace FaceSign.server
                 var postData = new StreamReader(request.InputStream).ReadToEnd();
                 //Log.I("接收到的数据："+postData);
                 IsAlarmEventModel AlarmEvent = JsonConvert.DeserializeObject<IsAlarmEventModel>(postData);
+                OnImageLoaded?.Invoke(AlarmEvent);
 
                 Bitmap rgbimage;
                 using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(AlarmEvent.visibleimg)))

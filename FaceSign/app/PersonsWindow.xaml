@@ -38,6 +38,11 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
+        <Grid  Visibility="Visible" Name="G120_bgr_stream" Width="780" Height="1042" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="828,18,215,0" >
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <Image x:Name="Image_Loaded"></Image>
+            </StackPanel>
+        </Grid>
         <Label 
             x:Name="PersonCount"
             Visibility="Hidden"
