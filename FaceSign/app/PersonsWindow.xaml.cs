@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -43,6 +44,9 @@ namespace FaceSign.app
         //Image rgbImageLoaded;
         string terminalId;
 
+        [DllImport("user32.dll", EntryPoint = "SetWindowLong", CharSet = CharSet.Auto)]
+        public static extern IntPtr SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+
         public PersonsWindow(string id)
         {
             WindowStartupLocation = WindowStartupLocation.Manual;
@@ -74,7 +78,7 @@ namespace FaceSign.app
             }
             WarningPlayer = new SoundPlayer("warning.wav");
             InitOrBindDeviceAsync();
-            OpenIR();            
+            OpenIR();
         }
 
         private void PersonsWindow_KeyDown(object sender, KeyEventArgs e)
@@ -135,18 +139,33 @@ namespace FaceSign.app
                 if (Fahrenheit.Visibility == Visibility.Hidden)
                 {
                     Fahrenheit.Visibility = Visibility.Visible;
+                    Fahrenheit_ir.Visibility = Visibility.Visible;
                 }
                 if (FahrenheitTimer != null)
                 {
                     FahrenheitTimer.Tick -= FahrenheitTimer_Tick;
                     FahrenheitTimer.Stop();
                 }
-                //Fahrenheit.Margin = new Thickness(960+100+model.X, 160+100+model.Y, 0, 0);
+                if (model.temperature > 37)
+                {
+                    Fahrenheit.Background = Brushes.Red;
+                    Fahrenheit_ir.Background = Brushes.Red;
+
+                } else
+                {
+                    Fahrenheit.Background = Brushes.Blue;
+                    Fahrenheit_ir.Background = Brushes.Blue;
+                }
+
+                
+
+
                 Fahrenheit.Margin = new Thickness(960 - 127 + model.X, 5 + model.Y, 0, 0);
-                //Fahrenheit.Margin = new Thickness(817 + (int)model.X/1.88, 20 + (int)model.Y / 1.88, 0, 0);
+                Fahrenheit_ir.Margin = new Thickness(50 + model.X, 5 + model.Y, 0, 0);
+
                 float tmp = (model.temperature * 9) / 5 + 32;
-                Fahrenheit.Content = "  " + tmp.ToString("F1") + "F°";
-                //Fahrenheit.Content = model.temperature.ToString("F1") + "F°";
+                Fahrenheit.Content = " " +  tmp.ToString("F1") + "F°";
+                Fahrenheit_ir.Content = " " + tmp.ToString("F1") + "F°";
                 FahrenheitTimer = new DispatcherTimer();
                 FahrenheitTimer.Tick += FahrenheitTimer_Tick;
                 FahrenheitTimer.Interval = TimeSpan.FromSeconds(1);
@@ -222,14 +241,28 @@ namespace FaceSign.app
                 if (BuildConfig.IRType == BuildConfig.IR_G120)
                 {
                     System.Drawing.Bitmap rgbimage;
+                    System.Drawing.Bitmap infraredimage;
                     using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(alarm_model.visibleimg)))
                     {
                         rgbimage = new System.Drawing.Bitmap(ms);
                         IntPtr hBitmap = rgbimage.GetHbitmap();
                         Image_Loaded.Source = Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions()); //BitmapFrame.Create(ms, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
                     }
-
+                    using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(alarm_model.infraredimg)))
+                    {
+                        infraredimage = new System.Drawing.Bitmap(ms);
+                        IntPtr hBitmap = infraredimage.GetHbitmap();
+                        Infrard_Stream_Image_Loaded.Source = Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions()); //BitmapFrame.Create(ms, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                    }
                     //image.Source = GetBitmap(person.RealTimeFace);
+                    //var processid = Process.GetProcessesByName("ZS05A").FirstOrDefault();
+                    //if (processid != null)
+                    //{
+                    //    var owner = processid.MainWindowHandle;
+                    //    var owned = Process.GetCurrentProcess().MainWindowHandle;
+                    //    var i = SetWindowLong(owned, -8, owner);
+                    //    var allChildWindows = new WindowHandleInfo(owner).GetAllChildHandles();
+                    //}
                     CreateTimer();
                 }
 
@@ -331,6 +364,56 @@ namespace FaceSign.app
                 Log.I("load face fail:" + e.Message);
             }
             return Bitmap;
+        }
+    }
+    public class WindowHandleInfo
+    {
+        private delegate bool EnumWindowProc(IntPtr hwnd, IntPtr lParam);
+
+        [DllImport("user32")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool EnumChildWindows(IntPtr window, EnumWindowProc callback, IntPtr lParam);
+
+        private IntPtr _MainHandle;
+
+        public WindowHandleInfo(IntPtr handle)
+        {
+            this._MainHandle = handle;
+        }
+
+        public List<IntPtr> GetAllChildHandles()
+        {
+            List<IntPtr> childHandles = new List<IntPtr>();
+
+            GCHandle gcChildhandlesList = GCHandle.Alloc(childHandles);
+            IntPtr pointerChildHandlesList = GCHandle.ToIntPtr(gcChildhandlesList);
+
+            try
+            {
+                EnumWindowProc childProc = new EnumWindowProc(EnumWindow);
+                EnumChildWindows(this._MainHandle, childProc, pointerChildHandlesList);
+            }
+            finally
+            {
+                gcChildhandlesList.Free();
+            }
+
+            return childHandles;
+        }
+
+        private bool EnumWindow(IntPtr hWnd, IntPtr lParam)
+        {
+            GCHandle gcChildhandlesList = GCHandle.FromIntPtr(lParam);
+
+            if (gcChildhandlesList == null || gcChildhandlesList.Target == null)
+            {
+                return false;
+            }
+
+            List<IntPtr> childHandles = gcChildhandlesList.Target as List<IntPtr>;
+            childHandles.Add(hWnd);
+
+            return true;
         }
     }
 }

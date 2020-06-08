@@ -78,6 +78,8 @@ namespace FaceSign.utils
                 {
                     var result = process.Start();
                     Log.I("start result:" + result);
+
+
                 }
                 catch (Exception e)
                 {

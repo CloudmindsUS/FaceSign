@@ -10,7 +10,7 @@
         Width="1920"
         Height="1080"
         WindowChrome.WindowChrome="{DynamicResource WindowChromeKey}"
-        Topmost="True"
+        Topmost="False"
         ShowInTaskbar="False"
         AllowsTransparency="True" WindowStyle="None" ResizeMode="NoResize" HorizontalAlignment="Left" VerticalAlignment="Top" >
     <Window.Resources>
@@ -43,6 +43,11 @@
                 <Image x:Name="Image_Loaded"></Image>
             </StackPanel>
         </Grid>
+        <Grid  Visibility="Visible" Name="G120_infrard_stream" Width="780" Height="1042" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,18,215,0" >
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <Image x:Name="Infrard_Stream_Image_Loaded"></Image>
+            </StackPanel>
+        </Grid>
         <Label 
             x:Name="PersonCount"
             Visibility="Hidden"
@@ -53,11 +58,20 @@
             Foreground="White" HorizontalAlignment="Right" 
             VerticalAlignment="Bottom"></Label>
         <Label
-            Width="110"
-            Height="40"
+            Width="95"
+            Height="35"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Visibility="Hidden"
+            Opacity="0.75"
             x:Name="Fahrenheit" Foreground="White" Background="#FF5454F1" FontSize="24"></Label>
+        <Label
+            Width="95"
+            Height="35"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Visibility="Hidden"
+            Opacity="0.75"
+            x:Name="Fahrenheit_ir" Foreground="White" Background="#FF5454F1" FontSize="24"></Label>
     </Grid>
 </Window>
