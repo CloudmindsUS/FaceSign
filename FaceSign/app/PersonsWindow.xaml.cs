@@ -126,10 +126,20 @@ namespace FaceSign.app
             HttpWebServer.Instance.OnPersonShow += Instance_OnPersonShow;
             HttpWebServer.Instance.OnFahrenheitShow += Instance_OnFahrenheitShow;
             HttpWebServer.Instance.OnImageLoaded += Instance_OnImageLoaded;
+            //HttpWebServer.Instance.OnControlWin += Instance_OnControlWin;
             TrafficStatisticsManager.Instance.OnPersonCountShow += Instance_OnPersonCountShow;
             HttpWebServer.Instance.Start(terminalId);
             CheckUpdateServer.GetInstance().Start(terminalId);
         }
+
+        //private void Instance_OnControlWin(int count)
+        //{
+        //    Dispatcher.Invoke(() =>
+        //    {
+        //        Log.I("接收到的数据：" + count);
+        //    });
+
+        //}
 
 
         private void Instance_OnFahrenheitShow(model.IsAlarmPointModel model)
@@ -157,9 +167,6 @@ namespace FaceSign.app
                     Fahrenheit_ir.Background = Brushes.Blue;
                 }
 
-                
-
-
                 Fahrenheit.Margin = new Thickness(960 - 127 + model.X, 5 + model.Y, 0, 0);
                 Fahrenheit_ir.Margin = new Thickness(50 + model.X, 5 + model.Y, 0, 0);
 
@@ -170,12 +177,14 @@ namespace FaceSign.app
                 FahrenheitTimer.Tick += FahrenheitTimer_Tick;
                 FahrenheitTimer.Interval = TimeSpan.FromSeconds(1);
                 FahrenheitTimer.Start();
+
             });
         }
 
         private void FahrenheitTimer_Tick(object sender, EventArgs e)
         {
             Fahrenheit.Visibility = Visibility.Hidden;
+            Fahrenheit_ir.Visibility = Visibility.Hidden;
         }
 
         private void Instance_OnPersonCountShow(int count)
@@ -217,6 +226,7 @@ namespace FaceSign.app
             Timer?.Stop();
             StopWarningTimer?.Stop();
             FahrenheitTimer?.Stop();
+            RgbimageTimer?.Stop();
             if (WarningPlayer != null)
             {
                 WarningPlayer.Stop();
@@ -230,14 +240,20 @@ namespace FaceSign.app
         private void Instance_OnImageLoaded(model.IsAlarmEventModel alarm_model)
         {
             Dispatcher.Invoke(() => {
-                if (Timer != null && Timer.IsEnabled)
+                if (G120_bgr_stream.Visibility == Visibility.Hidden)
                 {
-                    Timer.Stop();
+                    G120_bgr_stream.Visibility = Visibility.Visible;
+                    G120_infrard_stream.Visibility = Visibility.Visible;
                 }
-                if (RgbimageTimer != null && RgbimageTimer.IsEnabled)
+                if (RgbimageTimer != null)
                 {
+                    RgbimageTimer.Tick -= RgbimageTimer_Tick;
                     RgbimageTimer.Stop();
                 }
+                //if (RgbimageTimer != null && RgbimageTimer.IsEnabled)
+                //{
+                //    RgbimageTimer.Stop();
+                //}
                 if (BuildConfig.IRType == BuildConfig.IR_G120)
                 {
                     System.Drawing.Bitmap rgbimage;
@@ -254,16 +270,10 @@ namespace FaceSign.app
                         IntPtr hBitmap = infraredimage.GetHbitmap();
                         Infrard_Stream_Image_Loaded.Source = Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions()); //BitmapFrame.Create(ms, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
                     }
-                    //image.Source = GetBitmap(person.RealTimeFace);
-                    //var processid = Process.GetProcessesByName("ZS05A").FirstOrDefault();
-                    //if (processid != null)
-                    //{
-                    //    var owner = processid.MainWindowHandle;
-                    //    var owned = Process.GetCurrentProcess().MainWindowHandle;
-                    //    var i = SetWindowLong(owned, -8, owner);
-                    //    var allChildWindows = new WindowHandleInfo(owner).GetAllChildHandles();
-                    //}
-                    CreateTimer();
+                    RgbimageTimer = new DispatcherTimer();
+                    RgbimageTimer.Tick += RgbimageTimer_Tick;
+                    RgbimageTimer.Interval = TimeSpan.FromSeconds(1);
+                    RgbimageTimer.Start();
                 }
 
 
@@ -273,6 +283,7 @@ namespace FaceSign.app
         private void RgbimageTimer_Tick(object sender, EventArgs e)
         {
             G120_bgr_stream.Visibility = Visibility.Hidden;
+            G120_infrard_stream.Visibility = Visibility.Hidden;
         }
 
         private void Instance_OnPersonShow(model.PersonModel person)

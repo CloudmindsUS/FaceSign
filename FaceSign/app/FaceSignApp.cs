@@ -111,8 +111,8 @@ namespace FaceSign.app
                         Util.StartIR();
                         GuideTaskCheckManager.Instance.Start();
                     }
-                    LogoWindow logo = new LogoWindow();
-                    logo.Show();
+                    //LogoWindow logo = new LogoWindow();
+                    //logo.Show();
                     if (BuildConfig.IsSupportMetalDetection)
                     {
                         MetalDetectionManager.Instance.Open();

@@ -26,6 +26,7 @@ namespace FaceSign.server
         public delegate void ShowPerson(PersonModel person);
         public delegate void ShowFahrenheit(IsAlarmPointModel model);
         public delegate void Image_Loaded(IsAlarmEventModel alarm_model);
+        //public delegate void ControlWin(int count);
         public static HttpWebServer Instance = new HttpWebServer();
 
         private HttpListener listener;
@@ -34,6 +35,7 @@ namespace FaceSign.server
         public event ShowPerson OnPersonShow;
         public event ShowFahrenheit OnFahrenheitShow;
         public event Image_Loaded OnImageLoaded;
+        //public event ControlWin OnControlWin;
         string TerminalId;
         float Confidence = FaceManager.FaceConfidence;
 
@@ -131,27 +133,20 @@ namespace FaceSign.server
                         }
                         Image<Bgr, Byte> faceImage = fimage.ToImage<Bgr, Byte>();
 
-                        //double Threshold = 0.99;
                         Image<Gray, float> Matches = rgbImage.MatchTemplate(faceImage, TemplateMatchingType.CcoeffNormed);
                         double max_num = 0.0;
                         int max_x = 0;
                         int max_y = 0;
-                        //int cnt = 0;
 
                         for (int y = 0; y < Matches.Data.GetLength(0); y++)
                         {
                             for (int x = 0; x < Matches.Data.GetLength(1); x++)
                             {
-                                //if (Matches.Data[y, x, 0] >= Threshold) //Check if its a valid match
-                                //{
-                                //    //Console.WriteLine("Matched point: " + x + y);
-                                //    cnt += 1;
-                                //}
                                 if (Matches.Data[y, x, 0] > max_num)
                                 {
                                     max_num = Matches.Data[y, x, 0];
                                     max_x = x;
-                                    max_y = y;                                   
+                                    max_y = y;
                                 }
                             }
                         }
@@ -165,17 +160,7 @@ namespace FaceSign.server
                             //Log.I("坐标:"+model.X+","+model.Y);
                             OnFahrenheitShow?.Invoke(model);
                         }
-                        //if (model.temperature >= 20)
-                        //{
-                        //    if (BuildConfig.IsSupportAI)
-                        //    {
-                        //        ParseAlarm(model);
-                        //    }
-                        //    else
-                        //    {
-                        //        PostStranger(model, -1);
-                        //    }
-                        //}
+
                     }
                 }
                 
