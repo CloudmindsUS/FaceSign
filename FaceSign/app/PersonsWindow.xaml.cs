@@ -6,6 +6,7 @@ using FaceSign.server;
 using FaceSign.utils;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -237,6 +238,29 @@ namespace FaceSign.app
         {
             return System.Windows.Media.Color.FromArgb(drawColor.A, drawColor.R, drawColor.G, drawColor.B);
         }
+
+        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+        public static extern int BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);
+
+        public System.Drawing.Color GetColorAt(Point location)
+        {
+            System.Drawing.Bitmap screenPixel = new System.Drawing.Bitmap(1, 1, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            using (System.Drawing.Graphics gdest = System.Drawing.Graphics.FromImage(screenPixel))
+            {
+                using (System.Drawing.Graphics gsrc = System.Drawing.Graphics.FromHwnd(IntPtr.Zero))
+                {
+                    IntPtr hSrcDC = gsrc.GetHdc();
+                    IntPtr hDC = gdest.GetHdc();
+                    int retval = BitBlt(hDC, 0, 0, 1, 1, hSrcDC, (int)location.X, (int)location.Y, (int)System.Drawing.CopyPixelOperation.SourceCopy);
+                    gdest.ReleaseHdc();
+                    gsrc.ReleaseHdc();
+                }
+            }
+
+            Console.WriteLine("Pixel Color" + screenPixel.GetPixel(0, 0));
+            return screenPixel.GetPixel(0, 0);
+        }
+
         private void Instance_OnImageLoaded(model.IsAlarmEventModel alarm_model)
         {
             Dispatcher.Invoke(() => {
@@ -274,11 +298,22 @@ namespace FaceSign.app
                     RgbimageTimer.Tick += RgbimageTimer_Tick;
                     RgbimageTimer.Interval = TimeSpan.FromSeconds(1);
                     RgbimageTimer.Start();
+
+                    Point location = new Point();
+                    location.X = 1734;
+                    location.Y = 113;
+                    var c = GetColorAt(location);
+
+                    if (c.R == 21 && c.G == 22 && c.B == 38)
+                    {
+                        G120_bgr_stream.Visibility = Visibility.Visible;
+                        G120_infrard_stream.Visibility = Visibility.Visible;
+                        Activate();
+                    }
                 }
 
 
             });
-
         }
         private void RgbimageTimer_Tick(object sender, EventArgs e)
         {
