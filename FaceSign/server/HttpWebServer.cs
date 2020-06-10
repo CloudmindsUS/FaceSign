@@ -24,7 +24,7 @@ namespace FaceSign.server
     public class HttpWebServer
     {
         public delegate void ShowPerson(PersonModel person);
-        public delegate void ShowFahrenheit(IsAlarmPointModel model);
+        public delegate void ShowFahrenheit(List<IsAlarmPointModel> model);
         public delegate void Image_Loaded(IsAlarmEventModel alarm_model);
         //public delegate void ControlWin(int count);
         public static HttpWebServer Instance = new HttpWebServer();
@@ -123,7 +123,7 @@ namespace FaceSign.server
 
                 if (AlarmEvent.AlarmPointList != null && AlarmEvent.AlarmPointList.Count > 0)
                 {
-                    //List<IsAlarmPointModel> model_list = new List<IsAlarmPointModel>();
+                    List<IsAlarmPointModel> model_list = new List<IsAlarmPointModel>();
 
                     foreach (var model in AlarmEvent.AlarmPointList)
                     {
@@ -154,15 +154,15 @@ namespace FaceSign.server
                         model.Y = max_y;
                         //Console.WriteLine("Maximum point: " + max_num + " X: " + max_x + " Y: " + max_y);
                         //Console.WriteLine("> thresholdt: " + cnt);
-                        //model_list.Add(model);
-
-                        if (BuildConfig.IsSupportFahrenheit)
-                        {
-                            //Log.I("坐标:"+model.X+","+model.Y);
-                            OnFahrenheitShow?.Invoke(model);
-                        }
-
+                        model_list.Add(model);
                     }
+                    if (BuildConfig.IsSupportFahrenheit)
+                    {
+                        //Log.I("坐标:"+model.X+","+model.Y);
+                        OnFahrenheitShow?.Invoke(model_list);
+                    }
+
+                    model_list.Clear();
                 }
                 
 

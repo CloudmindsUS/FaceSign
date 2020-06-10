@@ -150,42 +150,183 @@ namespace FaceSign.app
         }
 
 
-        private void Instance_OnFahrenheitShow(model.IsAlarmPointModel model)
+        private void Instance_OnFahrenheitShow(List<model.IsAlarmPointModel> model_list)
         {            
             Dispatcher.Invoke(() =>
             {
-                if (Fahrenheit.Visibility == Visibility.Hidden)
-                {
-                    Fahrenheit.Visibility = Visibility.Visible;
-                    Fahrenheit_ir.Visibility = Visibility.Visible;
-                }
+                int len = model_list.Count();
                 if (FahrenheitTimer != null)
                 {
                     FahrenheitTimer.Tick -= FahrenheitTimer_Tick;
                     FahrenheitTimer.Stop();
                 }
-                    if (model.temperature*1.8+32 > threshold)
+                if (len >= 1)
                 {
-                    Fahrenheit.Background = Brushes.Red;
-                    Fahrenheit_ir.Background = Brushes.Red;
+                    model.IsAlarmPointModel m1 = model_list[0];
+                    if (Fahrenheit.Visibility == Visibility.Hidden)
+                    {
+                        Fahrenheit.Visibility = Visibility.Visible;
+                        Fahrenheit_ir.Visibility = Visibility.Visible;
+                    }
+                    if (m1.temperature * 1.8 + 32 > threshold)
+                    {
+                        Fahrenheit.Background = Brushes.Red;
+                        Fahrenheit_ir.Background = Brushes.Red;
 
-                } else
+                    }
+                    else
+                    {
+                        Fahrenheit.Background = Brushes.Blue;
+                        Fahrenheit_ir.Background = Brushes.Blue;
+                    }
+
+                    Fahrenheit.Margin = new Thickness(960 - 127 + m1.X, 5 + m1.Y, 0, 0);
+                    Fahrenheit_ir.Margin = new Thickness(50 + m1.X, 5 + m1.Y, 0, 0);
+
+                    float tmp = (m1.temperature * 9) / 5 + 32;
+                    if (tmp < 50)
+                    {
+                        Fahrenheit.Visibility = Visibility.Hidden;
+                        Fahrenheit_ir.Visibility = Visibility.Hidden;
+                    }
+                    Fahrenheit.Content = " " + tmp.ToString("F1") + "F°";
+                    Fahrenheit_ir.Content = " " + tmp.ToString("F1") + "F°";
+
+                }
+                if (len >= 2)
                 {
-                    Fahrenheit.Background = Brushes.Blue;
-                    Fahrenheit_ir.Background = Brushes.Blue;
+                    model.IsAlarmPointModel m2 = model_list[1];
+                    if (Fahrenheit2.Visibility == Visibility.Hidden)
+                    {
+                        Fahrenheit2.Visibility = Visibility.Visible;
+                        Fahrenheit_ir2.Visibility = Visibility.Visible;
+                    }
+                    if (m2.temperature * 1.8 + 32 > threshold)
+                    {
+                        Fahrenheit2.Background = Brushes.Red;
+                        Fahrenheit_ir2.Background = Brushes.Red;
+
+                    }
+                    else
+                    {
+                        Fahrenheit2.Background = Brushes.Blue;
+                        Fahrenheit_ir2.Background = Brushes.Blue;
+                    }
+
+                    Fahrenheit2.Margin = new Thickness(960 - 127 + m2.X, 5 + m2.Y, 0, 0);
+                    Fahrenheit_ir2.Margin = new Thickness(50 + m2.X, 5 + m2.Y, 0, 0);
+
+                    float tmp = (m2.temperature * 9) / 5 + 32;
+                    if (tmp < 50)
+                    {
+                        Fahrenheit2.Visibility = Visibility.Hidden;
+                        Fahrenheit_ir2.Visibility = Visibility.Hidden;
+                    }
+                    Fahrenheit2.Content = " " + tmp.ToString("F1") + "F°";
+                    Fahrenheit_ir2.Content = " " + tmp.ToString("F1") + "F°";
+
+                }
+                if (len >= 3)
+                {
+                    model.IsAlarmPointModel m3 = model_list[2];
+                    if (Fahrenheit3.Visibility == Visibility.Hidden)
+                    {
+                        Fahrenheit3.Visibility = Visibility.Visible;
+                        Fahrenheit_ir3.Visibility = Visibility.Visible;
+                    }
+                    if (m3.temperature * 1.8 + 32 > threshold)
+                    {
+                        Fahrenheit3.Background = Brushes.Red;
+                        Fahrenheit_ir3.Background = Brushes.Red;
+
+                    }
+                    else
+                    {
+                        Fahrenheit3.Background = Brushes.Blue;
+                        Fahrenheit_ir3.Background = Brushes.Blue;
+                    }
+
+                    Fahrenheit3.Margin = new Thickness(960 - 127 + m3.X, 5 + m3.Y, 0, 0);
+                    Fahrenheit_ir3.Margin = new Thickness(50 + m3.X, 5 + m3.Y, 0, 0);
+
+                    float tmp = (m3.temperature * 9) / 5 + 32;
+                    if (tmp < 50)
+                    {
+                        Fahrenheit3.Visibility = Visibility.Hidden;
+                        Fahrenheit_ir3.Visibility = Visibility.Hidden;
+                    }
+                    Fahrenheit3.Content = " " + tmp.ToString("F1") + "F°";
+                    Fahrenheit_ir3.Content = " " + tmp.ToString("F1") + "F°";
+
+                }
+                if (len >= 4)
+                {
+                    model.IsAlarmPointModel m4 = model_list[3];
+                    if (Fahrenheit4.Visibility == Visibility.Hidden)
+                    {
+                        Fahrenheit4.Visibility = Visibility.Visible;
+                        Fahrenheit_ir4.Visibility = Visibility.Visible;
+                    }
+                    if (m4.temperature * 1.8 + 32 > threshold)
+                    {
+                        Fahrenheit4.Background = Brushes.Red;
+                        Fahrenheit_ir4.Background = Brushes.Red;
+
+                    }
+                    else
+                    {
+                        Fahrenheit4.Background = Brushes.Blue;
+                        Fahrenheit_ir4.Background = Brushes.Blue;
+                    }
+
+                    Fahrenheit4.Margin = new Thickness(960 - 127 + m4.X, 5 + m4.Y, 0, 0);
+                    Fahrenheit_ir4.Margin = new Thickness(50 + m4.X, 5 + m4.Y, 0, 0);
+
+                    float tmp = (m4.temperature * 9) / 5 + 32;
+                    if (tmp < 50)
+                    {
+                        Fahrenheit4.Visibility = Visibility.Hidden;
+                        Fahrenheit_ir4.Visibility = Visibility.Hidden;
+                    }
+                    Fahrenheit4.Content = " " + tmp.ToString("F1") + "F°";
+                    Fahrenheit_ir4.Content = " " + tmp.ToString("F1") + "F°";
+
                 }
 
-                Fahrenheit.Margin = new Thickness(960 - 127 + model.X, 5 + model.Y, 0, 0);
-                Fahrenheit_ir.Margin = new Thickness(50 + model.X, 5 + model.Y, 0, 0);
-
-                float tmp = (model.temperature * 9) / 5 + 32;
-                if (tmp < 50)
+                if (len >= 5)
                 {
-                    Fahrenheit.Visibility = Visibility.Hidden;
-                    Fahrenheit_ir.Visibility = Visibility.Hidden;
+                    model.IsAlarmPointModel m5 = model_list[4];
+                    if (Fahrenheit5.Visibility == Visibility.Hidden)
+                    {
+                        Fahrenheit5.Visibility = Visibility.Visible;
+                        Fahrenheit_ir5.Visibility = Visibility.Visible;
+                    }
+                    if (m5.temperature * 1.8 + 32 > threshold)
+                    {
+                        Fahrenheit5.Background = Brushes.Red;
+                        Fahrenheit_ir5.Background = Brushes.Red;
+
+                    }
+                    else
+                    {
+                        Fahrenheit5.Background = Brushes.Blue;
+                        Fahrenheit_ir5.Background = Brushes.Blue;
+                    }
+
+                    Fahrenheit5.Margin = new Thickness(960 - 127 + m5.X, 5 + m5.Y, 0, 0);
+                    Fahrenheit_ir5.Margin = new Thickness(50 + m5.X, 5 + m5.Y, 0, 0);
+
+                    float tmp = (m5.temperature * 9) / 5 + 32;
+                    if (tmp < 50)
+                    {
+                        Fahrenheit5.Visibility = Visibility.Hidden;
+                        Fahrenheit_ir5.Visibility = Visibility.Hidden;
+                    }
+                    Fahrenheit5.Content = " " + tmp.ToString("F1") + "F°";
+                    Fahrenheit_ir5.Content = " " + tmp.ToString("F1") + "F°";
+
                 }
-                Fahrenheit.Content = " " +  tmp.ToString("F1") + "F°";
-                Fahrenheit_ir.Content = " " + tmp.ToString("F1") + "F°";
+
                 FahrenheitTimer = new DispatcherTimer();
                 FahrenheitTimer.Tick += FahrenheitTimer_Tick;
                 FahrenheitTimer.Interval = TimeSpan.FromSeconds(1);
@@ -198,6 +339,18 @@ namespace FaceSign.app
         {
             Fahrenheit.Visibility = Visibility.Hidden;
             Fahrenheit_ir.Visibility = Visibility.Hidden;
+
+            Fahrenheit2.Visibility = Visibility.Hidden;
+            Fahrenheit_ir2.Visibility = Visibility.Hidden;
+
+            Fahrenheit3.Visibility = Visibility.Hidden;
+            Fahrenheit_ir3.Visibility = Visibility.Hidden;
+
+            Fahrenheit4.Visibility = Visibility.Hidden;
+            Fahrenheit_ir4.Visibility = Visibility.Hidden;
+
+            Fahrenheit5.Visibility = Visibility.Hidden;
+            Fahrenheit_ir5.Visibility = Visibility.Hidden;
         }
 
         private void Instance_OnPersonCountShow(int count)

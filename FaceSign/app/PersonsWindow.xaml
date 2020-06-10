@@ -98,5 +98,53 @@
             Visibility="Hidden"
             Opacity="0.75"
             x:Name="Fahrenheit_ir2" Foreground="White" Background="#FF5454F1" FontSize="24"></Label>
+        <Label
+            Width="95"
+            Height="35"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Visibility="Hidden"
+            Opacity="0.75"
+            x:Name="Fahrenheit3" Foreground="White" Background="#FF5454F1" FontSize="24"></Label>
+        <Label
+            Width="95"
+            Height="35"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Visibility="Hidden"
+            Opacity="0.75"
+            x:Name="Fahrenheit_ir3" Foreground="White" Background="#FF5454F1" FontSize="24"></Label>
+        <Label
+            Width="95"
+            Height="35"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Visibility="Hidden"
+            Opacity="0.75"
+            x:Name="Fahrenheit4" Foreground="White" Background="#FF5454F1" FontSize="24"></Label>
+        <Label
+            Width="95"
+            Height="35"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Visibility="Hidden"
+            Opacity="0.75"
+            x:Name="Fahrenheit_ir4" Foreground="White" Background="#FF5454F1" FontSize="24"></Label>
+        <Label
+            Width="95"
+            Height="35"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Visibility="Hidden"
+            Opacity="0.75"
+            x:Name="Fahrenheit5" Foreground="White" Background="#FF5454F1" FontSize="24"></Label>
+        <Label
+            Width="95"
+            Height="35"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Visibility="Hidden"
+            Opacity="0.75"
+            x:Name="Fahrenheit_ir5" Foreground="White" Background="#FF5454F1" FontSize="24"></Label>
     </Grid>
 </Window>
