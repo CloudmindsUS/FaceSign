@@ -42,6 +42,7 @@ namespace FaceSign.app
         SoundPlayer WarningPlayer;
         Label PersonInfo;
         Image Avater;
+        Double threshold = 98.6;
         //Image rgbImageLoaded;
         string terminalId;
 
@@ -142,6 +143,12 @@ namespace FaceSign.app
 
         //}
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            tempOutput.Text = "New threshold, " + nameInput.Text + "!";
+            threshold = Convert.ToDouble(nameInput.Text);
+        }
+
 
         private void Instance_OnFahrenheitShow(model.IsAlarmPointModel model)
         {            
@@ -157,7 +164,7 @@ namespace FaceSign.app
                     FahrenheitTimer.Tick -= FahrenheitTimer_Tick;
                     FahrenheitTimer.Stop();
                 }
-                if (model.temperature > 37)
+                    if (model.temperature*1.8+32 > threshold)
                 {
                     Fahrenheit.Background = Brushes.Red;
                     Fahrenheit_ir.Background = Brushes.Red;
@@ -172,6 +179,11 @@ namespace FaceSign.app
                 Fahrenheit_ir.Margin = new Thickness(50 + model.X, 5 + model.Y, 0, 0);
 
                 float tmp = (model.temperature * 9) / 5 + 32;
+                if (tmp < 50)
+                {
+                    Fahrenheit.Visibility = Visibility.Hidden;
+                    Fahrenheit_ir.Visibility = Visibility.Hidden;
+                }
                 Fahrenheit.Content = " " +  tmp.ToString("F1") + "F°";
                 Fahrenheit_ir.Content = " " + tmp.ToString("F1") + "F°";
                 FahrenheitTimer = new DispatcherTimer();
@@ -257,7 +269,7 @@ namespace FaceSign.app
                 }
             }
 
-            Console.WriteLine("Pixel Color" + screenPixel.GetPixel(0, 0));
+            //Console.WriteLine("Pixel Color" + screenPixel.GetPixel(0, 0));
             return screenPixel.GetPixel(0, 0);
         }
 

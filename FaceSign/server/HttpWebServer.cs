@@ -123,6 +123,7 @@ namespace FaceSign.server
 
                 if (AlarmEvent.AlarmPointList != null && AlarmEvent.AlarmPointList.Count > 0)
                 {
+                    //List<IsAlarmPointModel> model_list = new List<IsAlarmPointModel>();
 
                     foreach (var model in AlarmEvent.AlarmPointList)
                     {
@@ -132,7 +133,6 @@ namespace FaceSign.server
                             fimage = new Bitmap(ms2);
                         }
                         Image<Bgr, Byte> faceImage = fimage.ToImage<Bgr, Byte>();
-
                         Image<Gray, float> Matches = rgbImage.MatchTemplate(faceImage, TemplateMatchingType.CcoeffNormed);
                         double max_num = 0.0;
                         int max_x = 0;
@@ -154,6 +154,7 @@ namespace FaceSign.server
                         model.Y = max_y;
                         //Console.WriteLine("Maximum point: " + max_num + " X: " + max_x + " Y: " + max_y);
                         //Console.WriteLine("> thresholdt: " + cnt);
+                        //model_list.Add(model);
 
                         if (BuildConfig.IsSupportFahrenheit)
                         {
