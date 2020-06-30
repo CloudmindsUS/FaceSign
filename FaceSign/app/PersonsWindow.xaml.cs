@@ -128,6 +128,7 @@ namespace FaceSign.app
             HttpWebServer.Instance.OnPersonShow += Instance_OnPersonShow;
             HttpWebServer.Instance.OnFahrenheitShow += Instance_OnFahrenheitShow;
             HttpWebServer.Instance.OnImageLoaded += Instance_OnImageLoaded;
+            HttpWebServer.Instance.OnCountShow += Instance_OnCountShow;
             //HttpWebServer.Instance.OnControlWin += Instance_OnControlWin;
             TrafficStatisticsManager.Instance.OnPersonCountShow += Instance_OnPersonCountShow;
             HttpWebServer.Instance.Start(terminalId);
@@ -149,6 +150,10 @@ namespace FaceSign.app
             threshold = Convert.ToDouble(nameInput.Text);
         }
 
+        private void Instance_OnCountShow(int count)
+        {
+            countOutput.Text = Convert.ToString(count);
+        }
 
         private void Instance_OnFahrenheitShow(List<model.IsAlarmPointModel> model_list)
         {            

@@ -25,6 +25,7 @@ namespace FaceSign.server
     {
         public delegate void ShowPerson(PersonModel person);
         public delegate void ShowFahrenheit(List<IsAlarmPointModel> model);
+        public delegate void ShowCount(int count);
         public delegate void Image_Loaded(IsAlarmEventModel alarm_model);
         //public delegate void ControlWin(int count);
         public static HttpWebServer Instance = new HttpWebServer();
@@ -34,10 +35,14 @@ namespace FaceSign.server
         public string UUID { get; private set; }
         public event ShowPerson OnPersonShow;
         public event ShowFahrenheit OnFahrenheitShow;
+        public event ShowCount OnCountShow;
         public event Image_Loaded OnImageLoaded;
         //public event ControlWin OnControlWin;
         string TerminalId;
         float Confidence = FaceManager.FaceConfidence;
+        int count = 0;
+        DateTime LastReceiveTime;
+        List<IsAlarmPointModel> lastFrame = new List<IsAlarmPointModel>();
 
         private HttpWebServer() {
             listener = new HttpListener();
@@ -72,6 +77,7 @@ namespace FaceSign.server
             try
             {
                 listener.Start();
+                LastReceiveTime = DateTime.Now;
                 listener.BeginGetContext(Receive,null);
             }
             catch (Exception ex) {
@@ -104,6 +110,10 @@ namespace FaceSign.server
             }
         }
 
+        public int computeDistance(IsAlarmPointModel model0, IsAlarmPointModel model1)
+        {
+            return (int)Math.Pow(model0.X-model1.X,2)+ (int)Math.Pow(model0.Y - model1.Y, 2);
+        }
 
         private void HandleAlarmData(HttpListenerRequest request, HttpListenerResponse response)
         {
@@ -113,12 +123,20 @@ namespace FaceSign.server
                 //Log.I("接收到的数据："+postData);
                 IsAlarmEventModel AlarmEvent = JsonConvert.DeserializeObject<IsAlarmEventModel>(postData);
                 OnImageLoaded?.Invoke(AlarmEvent);
-
+                //count += 1;
                 Bitmap rgbimage;
                 using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(AlarmEvent.visibleimg)))
                 {
                     rgbimage = new Bitmap(ms);
+                    //rgbimage.Save(@"D:\Output\rgb_" + count.ToString() + ".png");
                 }
+                //Bitmap irimage;
+                //using (MemoryStream ms2 = new MemoryStream(Convert.FromBase64String(AlarmEvent.infraredimg)))
+                //{
+                //    irimage = new Bitmap(ms2);
+                //    rgbimage.Save(@"D:\Output\ir_" + count.ToString() + ".png");
+                //}
+
                 Image<Bgr, Byte> rgbImage = rgbimage.ToImage<Bgr, Byte>();
 
                 if (AlarmEvent.AlarmPointList != null && AlarmEvent.AlarmPointList.Count > 0)
@@ -128,9 +146,10 @@ namespace FaceSign.server
                     foreach (var model in AlarmEvent.AlarmPointList)
                     {
                         Bitmap fimage;
-                        using (MemoryStream ms2 = new MemoryStream(Convert.FromBase64String(model.faceimg)))
+                        using (MemoryStream ms3 = new MemoryStream(Convert.FromBase64String(model.faceimg)))
                         {
-                            fimage = new Bitmap(ms2);
+                            fimage = new Bitmap(ms3);
+                            //fimage.Save(@"D:\Output\face_" + count.ToString() + ".png");
                         }
                         Image<Bgr, Byte> faceImage = fimage.ToImage<Bgr, Byte>();
                         Image<Gray, float> Matches = rgbImage.MatchTemplate(faceImage, TemplateMatchingType.CcoeffNormed);
@@ -156,16 +175,71 @@ namespace FaceSign.server
                         //Console.WriteLine("> thresholdt: " + cnt);
                         model_list.Add(model);
                     }
+                    if (DateTime.Now.Subtract(LastReceiveTime).TotalMilliseconds > 1500)
+                    {
+                        lastFrame.Clear();
+                        foreach (var model in model_list)
+                        {
+                            lastFrame.Add(model);
+                            count += 1;
+                            Console.WriteLine(count);
+                            //OnCountShow?.Invoke(count);
+                        }
+                    }
+                    else
+                    {
+                        int i = 0;
+                        foreach (var curr_person in model_list)
+                        {
+                            int j = 0;
+                            int min_dist = 0;
+                            int min_idx = 0;
+                            foreach (var last_person in lastFrame)
+                            {
+                                if (min_dist == 0)
+                                {
+                                    min_dist = computeDistance(curr_person, last_person);
+                                    min_idx = j;
+                                }
+                                else
+                                {
+                                    int this_dist = computeDistance(curr_person, last_person);
+                                    if (this_dist < min_dist)
+                                    {
+                                        min_dist = this_dist;
+                                        min_idx = j;
+                                    }
+                                }
+                                if (min_dist > 20000)
+                                {
+                                    count += 1;
+                                    Console.WriteLine(count);
+                                    //OnCountShow?.Invoke(count);
+                                }
+                                else
+                                {
+                                    lastFrame[min_idx].X = 5000;
+                                    lastFrame[min_idx].Y = 5000;
+                                }
+                                    
+                            }
+                        }
+                        lastFrame.Clear();
+                        foreach (var model in model_list)
+                        {
+                            lastFrame.Add(model);
+                        }
+                    }
                     if (BuildConfig.IsSupportFahrenheit)
                     {
                         //Log.I("坐标:"+model.X+","+model.Y);
                         OnFahrenheitShow?.Invoke(model_list);
                     }
-
+                    LastReceiveTime = DateTime.Now;
                     model_list.Clear();
                 }
-                
 
+                
 
                 SendResponse("0", "success", response);
             }
